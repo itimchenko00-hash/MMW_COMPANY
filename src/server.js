@@ -9,6 +9,7 @@ const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 const HOME = path.join(ROOT_DIR, 'index.html');
 const PROJECT_PRESENTATIONS = path.join(PUBLIC_DIR, 'project-presentations-v3.html');
 const PRESENTATION_LINKS = path.join(PUBLIC_DIR, 'presentation-links.js');
+const ALADIN_CONTENT = path.join(PUBLIC_DIR, 'aladin-content-v1.js');
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -21,8 +22,8 @@ app.use(express.static(ROOT_DIR, { maxAge: 0 }));
 app.use('/public', express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.get('/', (req, res) => res.sendFile(HOME));
 
-// Every project opens the same detailed presentation engine, with explicit
-// Investor / Team / Buyer deck controls injected into the page.
+// Every project opens the shared presentation engine. ALADIN receives an
+// additional content layer for the Team and Buyer decks.
 app.get('/aladin', sendProjectPresentation);
 app.get('/project/:slug', sendProjectPresentation);
 
@@ -30,8 +31,13 @@ function sendProjectPresentation(req, res) {
   fs.readFile(PROJECT_PRESENTATIONS, 'utf8', (err, html) => {
     if (err) return res.status(500).send('Presentation engine unavailable');
     fs.readFile(PRESENTATION_LINKS, 'utf8', (jsErr, js) => {
-      if (jsErr) return res.type('html').send(html);
-      res.type('html').send(html.replace('</body>', `<script>${js}</script></body>`));
+      const injectBase = jsErr ? '' : `<script>${js}</script>`;
+      const injectAladin = req.params.slug === 'aladin' || req.path === '/aladin';
+      if (!injectAladin) return res.type('html').send(html.replace('</body>', `${injectBase}</body>`));
+      fs.readFile(ALADIN_CONTENT, 'utf8', (aErr, aJs) => {
+        const inject = `${injectBase}${aErr ? '' : `<script>${aJs}</script>`}`;
+        res.type('html').send(html.replace('</body>', `${inject}</body>`));
+      });
     });
   });
 }
@@ -45,6 +51,7 @@ app.get('/health', (req, res) => res.json({
   service: 'MMW-COMPANY',
   status: 'ok',
   presentation_engine: 'v3',
+  aladin_content: 'team+buyer-v1',
   source: 'repository-root',
   architecture: 'main-site -> projects -> three-audience-presentations -> MMW-ORDER'
 }));

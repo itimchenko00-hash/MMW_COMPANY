@@ -1,0 +1,1 @@
+Homepage v4 is selected by src/server.js on the publication branch.

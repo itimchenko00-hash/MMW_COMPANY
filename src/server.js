@@ -11,6 +11,7 @@ const PROJECT_PRESENTATIONS = path.join(PUBLIC_DIR, 'project-presentations-v3.ht
 const PRESENTATION_LINKS = path.join(PUBLIC_DIR, 'presentation-links.js');
 const ALADIN_CONTENT = path.join(PUBLIC_DIR, 'aladin-content-v1.js');
 const NEXUS_CONTENT = path.join(PUBLIC_DIR, 'nexus-content-v1.js');
+const AGROHUB_PRESENTATIONS = path.join(PUBLIC_DIR, 'agrohub-presentations-v1.html');
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -27,11 +28,13 @@ app.get('/aladin', sendProjectPresentation);
 app.get('/project/:slug', sendProjectPresentation);
 
 function sendProjectPresentation(req, res) {
+  const slug = req.params.slug || (req.path === '/aladin' ? 'aladin' : '');
+  if (slug === 'agrohub') return res.sendFile(AGROHUB_PRESENTATIONS);
+
   fs.readFile(PROJECT_PRESENTATIONS, 'utf8', (err, html) => {
     if (err) return res.status(500).send('Presentation engine unavailable');
     fs.readFile(PRESENTATION_LINKS, 'utf8', (jsErr, js) => {
       const injectBase = jsErr ? '' : `<script>${js}</script>`;
-      const slug = req.params.slug || (req.path === '/aladin' ? 'aladin' : '');
       const contentFile = slug === 'aladin' ? ALADIN_CONTENT : slug === 'nexus' ? NEXUS_CONTENT : null;
       if (!contentFile) return res.type('html').send(html.replace('</body>', `${injectBase}</body>`));
       fs.readFile(contentFile, 'utf8', (cErr, cJs) => {
@@ -53,6 +56,7 @@ app.get('/health', (req, res) => res.json({
   presentation_engine: 'v3',
   aladin_content: 'team+buyer-v1',
   nexus_content: 'investor+team+buyer-v1',
+  agrohub_content: 'investor+team+buyer-v1',
   source: 'repository-root',
   architecture: 'main-site -> projects -> project-specific-presentations -> MMW-ORDER'
 }));

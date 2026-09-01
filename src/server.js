@@ -3,21 +3,29 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-app.use(express.static(path.join(__dirname, '../public')));
+const PUBLIC_DIR = path.join(__dirname, '../public');
+const HOME = path.join(PUBLIC_DIR, 'index.html');
 
-// ALADIN is a core section of the public MMW-COMPANY site.
+app.use(express.static(PUBLIC_DIR));
+
+// Canonical home page: MMW-COMPANY always opens at the root URL.
+app.get('/', (req, res) => {
+  res.sendFile(HOME);
+});
+
+// ALADIN is a core project of the MMW-COMPANY platform.
 app.get('/aladin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/aladin-hub.html'));
+  res.sendFile(path.join(PUBLIC_DIR, 'aladin-hub.html'));
 });
 
 // Dedicated ALADIN buyer presentation.
 app.get('/aladin-pokupateli', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/aladin-buyers.html'));
+  res.sendFile(path.join(PUBLIC_DIR, 'aladin-buyers.html'));
 });
 
-// MMW-COMPANY project portfolio: ALADIN + four distinct demonstration projects.
+// MMW-COMPANY project portfolio: ALADIN + four demonstration projects.
 app.get('/projects', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/projects-v2.html'));
+  res.sendFile(path.join(PUBLIC_DIR, 'projects-v2.html'));
 });
 
 // Friendly alias for the portfolio.

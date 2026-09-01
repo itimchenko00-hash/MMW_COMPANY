@@ -1,52 +1,148 @@
 (() => {
-  const VALUE = {
-    LAND:{icon:'⌂',ru:'ЗЕМЛЯ',photo:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=85',history:'Земля была первым производственным активом цивилизации: от общинных полей до современной девелоперской экономики.',text:'MMW оценивает участок не только по площади и цене, а по назначению, ограничениям, подъездам, инженерии, спросу и возможной модели продукта.'},
-    CAPITAL:{icon:'◈',ru:'ИНВЕСТИЦИИ',photo:'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1400&q=85',history:'Современные инвестиционные рынки выросли из банковского и промышленного финансирования XIX–XX веков.',text:'MMW собирает финансовую архитектуру: CAPEX, источники капитала, SPV, этапы финансирования, риски и сценарии.'},
-    DESIGN:{icon:'⌗',ru:'ПРОЕКТ',photo:'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=85',history:'Архитектура прошла путь от ручных чертежей и макетов к CAD, BIM, 3D и цифровым двойникам.',text:'Проект переводит идею в продукт: архитектура, инженерия, смета, визуализация, техзадание и подготовка к реализации.'},
-    BUILD:{icon:'▦',ru:'СТРОЙКА',photo:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85',history:'Организованное строительство существовало задолго до современной техники; индустриализация добавила механизацию и стандартизацию.',text:'MMW организует подрядчиков, закупки, календарный план, контроль качества, бюджета и документации.'},
-    SALES:{icon:'↗',ru:'ПРОДАЖИ',photo:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=85',history:'Профессиональные продажи недвижимости сформировались вместе с городским рынком, рекламой и ипотечным финансированием.',text:'Коммерциализация начинается до завершения строительства: позиционирование, упаковка, лидогенерация, CRM и сделки.'},
-    OPERATE:{icon:'⚙',ru:'ОПЕРАЦИИ',photo:'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1400&q=85',history:'Управление объектами стало отдельной дисциплиной по мере роста крупных зданий, гостиниц, заводов и бизнес-центров.',text:'Оператор превращает построенный объект в работающий актив: сервис, эксплуатация, загрузка, расходы и клиентский опыт.'},
-    RETURN:{icon:'₴',ru:'ДОХОД',photo:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1400&q=85',history:'Доходность проекта всегда связана с соотношением вложенного капитала, риска, времени и денежного потока.',text:'MMW строит прозрачную модель возврата: выручка, EBITDA, денежный поток, exit или реинвестирование — с обязательной проверкой фактических данных.'}
+  'use strict';
+
+  const IMG = {
+    LAND: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=85',
+    CAPITAL: 'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1400&q=85',
+    DESIGN: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=85',
+    BUILD: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85',
+    SALES: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=85',
+    OPERATE: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1400&q=85',
+    RETURN: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1400&q=85',
+    TEAM: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1600&q=85',
+    SERVICES: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=85'
   };
+
+  const VALUE = [
+    ['LAND','ЗЕМЛЯ','⌂','Актив и исходная точка проекта.','MMW проверяет назначение, ограничения, инфраструктуру, окружение и потенциальный продукт.','Земля стала основой организованного хозяйства задолго до появления современной недвижимости.'],
+    ['CAPITAL','ИНВЕСТИЦИИ','◈','Ресурс, который запускает проект.','Формируем CAPEX/OPEX, источники капитала, этапы финансирования, риски и структуру SPV.','Современная инвестиционная архитектура выросла вместе с банками, промышленностью и рынками капитала.'],
+    ['DESIGN','ПРОЕКТ','⌗','Идея превращается в продукт.','Архитектура, инженерия, BIM, смета, визуализация, ТЗ и подготовка к реализации.','От ручных чертежей архитектура пришла к CAD, BIM, 3D и цифровым моделям.'],
+    ['BUILD','СТРОЙКА','▦','Проект становится физическим активом.','Подрядчики, закупки, календарь, качество, бюджет, безопасность и документация.','Индустриализация добавила строительству механизацию, стандартизацию и управление качеством.'],
+    ['SALES','ПРОДАЖИ','↗','Созданный продукт находит своего клиента.','Позиционирование, упаковка, маркетинг, лидогенерация, CRM и организация сделок.','Профессиональные продажи недвижимости развивались вместе с городскими рынками, рекламой и ипотекой.'],
+    ['OPERATE','ОПЕРАЦИИ','⚙','Актив начинает работать после запуска.','Эксплуатация, сервис, загрузка, расходы, клиентский опыт и контроль операционной модели.','Facility и property management стали отдельными дисциплинами с ростом сложных зданий и коммерческих объектов.'],
+    ['RETURN','ДОХОД','₴','Экономический результат проекта.','Выручка, EBITDA, денежный поток, exit или реинвестирование — только после проверки фактических данных.','Доходность всегда связывает капитал, время, риск и денежный поток.']
+  ];
+
   const PROFESSIONS = [
-    ['🏛️','Архитектор','Архитектор исторически был организатором замысла и строительства. В античности эта роль объединяла расчёт, геометрию и управление мастерами. Сегодня к этому добавились BIM, энергоэффективность и продуктовая логика.','В MMW архитектура превращает бизнес-задачу в понятный, реализуемый и продаваемый продукт.'],
-    ['📐','Инженер-конструктор','Профессия выросла вместе с развитием расчётной механики, стали и железобетона. Новые материалы позволили строить выше, дальше и безопаснее.','В MMW инженер отвечает за техническую реализуемость, надёжность и связь проекта с реальным строительством.'],
-    ['💰','Финансовый аналитик','Системный финансовый анализ развивался вместе с банками, промышленностью и рынками капитала. Финансовая модель стала языком принятия инвестиционных решений.','В MMW финансовый блок переводит проект в цифры: CAPEX, OPEX, доходы, риски, сценарии и возврат капитала.'],
-    ['📊','Сметчик / Cost Manager','Учёт материалов и труда нужен был ещё на древних стройках. Индустриализация привела к нормативам, ведомостям объёмов и современному cost management.','В MMW специалист защищает бюджет и связывает стоимость с графиком, закупками и контрактами.'],
-    ['🏗️','Строитель','Строительство — одна из древнейших организованных профессий. От ручного труда и каменных сооружений отрасль пришла к механизации, промышленным технологиям и цифровому контролю.','В MMW строитель превращает документацию и проект в физический актив.'],
-    ['◈','Project Manager','Современный project management сформировался в XX веке на сложных инженерных и инфраструктурных программах. Диаграмма Ганта стала одним из классических инструментов планирования.','В MMW PM синхронизирует людей, деньги, сроки, риски, документы и результат.'],
-    ['🚀','Development Manager','Девелопмент объединяет землю, капитал, продукт и рынок. Современный девелопер действует как интегратор множества профессий и интересов.','В MMW development — это управление всей логикой создания стоимости от идеи до актива.'],
-    ['🤝','Sales & Marketing','Профессиональный маркетинг вырос из массового рынка XX века, а цифровые CRM и performance-инструменты сделали продажи измеримым процессом.','В MMW коммерческий блок формирует спрос и превращает продукт в сделки.']
+    ['🏛️','Архитектор','От главного строителя античности до BIM и цифровых моделей.','В MMW превращает бизнес-задачу в понятный, реализуемый и продаваемый продукт.'],
+    ['📐','Инженер-конструктор','Развитие расчётной механики, стали и железобетона позволило создавать более сложные и высокие здания.','Отвечает за надёжность, расчёты и техническую реализуемость.'],
+    ['📊','Сметчик / Cost Manager','Учёт материалов и труда существовал на крупных стройках задолго до современных сметных систем.','Защищает бюджет и связывает стоимость с графиком, закупками и контрактами.'],
+    ['💻','3D / Design','Ручная перспектива сменилась CAD, 3D, VR и цифровыми двойниками.','Делает сложный проект понятным клиенту, инвестору и команде.'],
+    ['🏗️','Строитель','Одна из древнейших организованных профессий, которая прошла путь от ручного труда к механизации и цифровому контролю.','Превращает проектную документацию в реальный актив.'],
+    ['◈','Project Manager','Дисциплина управления проектами сформировалась на сложных инженерных и инфраструктурных программах XX века.','Синхронизирует людей, деньги, сроки, риски, документы и результат.'],
+    ['🚀','Development Manager','Девелопмент объединяет землю, капитал, продукт и рынок в единую экономическую систему.','Управляет созданием стоимости от идеи до работающего актива.'],
+    ['🤝','Sales & Marketing','Современные продажи стали измеримым процессом благодаря маркетингу, CRM и цифровым каналам.','Формирует спрос и превращает продукт в сделки.']
   ];
+
   const SERVICES = [
-    ['01','Development','Концепция проекта, девелоперская стратегия, ТЭО и дорожная карта.'],
-    ['02','Land & Due Diligence','Предварительный анализ участка, назначения, ограничений, инфраструктуры и потенциала.'],
-    ['03','Financial Architecture','Финансовая модель, CAPEX/OPEX, сценарии, инвестиционная структура и data room.'],
-    ['04','Project Management','Организация команды, календаря, бюджета, рисков, подрядчиков и документации.'],
-    ['05','Design Management','Техническое задание, архитектура, инженерия, BIM, визуализация и согласовательный контур.'],
-    ['06','Construction Management','Закупки, подрядчики, контроль сроков, качества, стоимости и строительной документации.'],
-    ['07','Sales & Marketing','Позиционирование, упаковка продукта, маркетинг, лидогенерация, CRM и организация продаж.'],
-    ['08','Operations','Подготовка операционной модели, сервисов, эксплуатации и управления активом.'],
-    ['09','Investment Packaging','Инвестиционный меморандум, презентации, структура сделки и переговорная подготовка.'],
-    ['10','Project Company / SPV','Формирование проектной структуры и распределение ролей, ресурсов, рисков и экономики по договорённости сторон.']
+    ['01','Development','Концепция, стратегия, ТЭО и дорожная карта проекта.'],
+    ['02','Land & Due Diligence','Предварительная проверка участка, назначения, ограничений и потенциала.'],
+    ['03','Financial Architecture','Финансовая модель, CAPEX/OPEX, сценарии, структура капитала и data room.'],
+    ['04','Project Management','Команда, сроки, бюджет, риски, подрядчики и проектная документация.'],
+    ['05','Design Management','ТЗ, архитектура, инженерия, BIM, визуализация и координация проектирования.'],
+    ['06','Construction Management','Закупки, подрядчики, контроль сроков, качества, стоимости и строительного цикла.'],
+    ['07','Sales & Marketing','Позиционирование, упаковка, маркетинг, лидогенерация, CRM и продажи.'],
+    ['08','Operations','Подготовка операционной модели, сервисов и управления активом.'],
+    ['09','Investment Packaging','Инвестмеморандум, презентации, структура сделки и переговорная подготовка.'],
+    ['10','Project Company / SPV','Проектная структура, распределение ресурсов, рисков и экономики по соглашению сторон.']
   ];
-  const PROJECTS = ['ALADIN','NEXUS WORK','CARPATHIA ECO LODGE','AGROHUB','ENERGY PARK'];
-  const PRESENT = {
-    investor:['ИНВЕСТИЦИОННАЯ ПРЕЗЕНТАЦИЯ','Рынок → продукт → CAPEX → модель доходов → риски → структура сделки → сценарии финансирования.'],
-    team:['КОМАНДНАЯ ПРЕЗЕНТАЦИЯ','Роли → зоны ответственности → мотивация → workflow → контроль → путь от специалиста до партнёра.'],
-    client:['КЛИЕНТСКАЯ ПРЕЗЕНТАЦИЯ','Проблема → продукт → преимущества → сервис → этапы → ожидаемый результат для будущего клиента.']
-  };
-  function css(){ if(document.getElementById('upgrade-css'))return; const s=document.createElement('style');s.id='upgrade-css';s.textContent=`
-  body{font-size:17px}.section h2{letter-spacing:-.04em}.upgrade-section{background:linear-gradient(180deg,#080c0a,#0b110e)}
-  .value-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.value-card{position:relative;min-height:245px;overflow:hidden;border:1px solid #343b34;background:#0b100d;color:#fff;text-align:left;padding:0;cursor:pointer}.value-card .photo{position:absolute;inset:0;background:var(--photo) center/cover;opacity:.42;transition:.35s}.value-card:after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 10%,rgba(4,7,5,.92) 86%)}.value-card:hover .photo{transform:scale(1.06);opacity:.58}.value-content{position:absolute;z-index:2;inset:auto 20px 18px}.value-icon{font-size:28px;color:#d7b56a;display:block;margin-bottom:8px}.value-content b{display:block;color:#d7b56a;font-size:11px;letter-spacing:.14em}.value-content strong{display:block;font-size:25px;margin:3px 0}.value-content small{color:#aab1a9}.value-detail,.profession-detail{margin-top:18px;border:1px solid #3b423a;background:#0c120f;padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:24px}.detail-photo{min-height:260px;background:var(--photo) center/cover}.detail-copy h3{font-size:30px;margin:0 0 10px}.detail-copy p{color:#b8c0b8}.history{border-left:2px solid #c9a45b;padding-left:16px;color:#d8ddd7}.profession-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.profession-card{border:1px solid #303730;background:#0b100d;color:#fff;text-align:left;padding:22px;cursor:pointer;min-height:170px}.profession-card:hover{border-color:#c9a45b;transform:translateY(-2px)}.profession-card span{font-size:28px}.profession-card b{display:block;font-size:20px;margin:18px 0 8px}.profession-card small{color:#8e978e}.service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.service-card{border:1px solid #303730;background:#0b100d;padding:22px;display:grid;grid-template-columns:55px 1fr;gap:12px}.service-card .n{color:#c9a45b;font-size:12px}.service-card h3{margin:0;font-size:21px}.service-card p{margin:7px 0 0;color:#929b92}.project-presentations{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.presentation-card{border:1px solid #303730;background:#0b100d;padding:22px}.presentation-card .tag{color:#c9a45b;font-size:10px;letter-spacing:.14em}.presentation-card h3{font-size:21px}.presentation-card p{color:#919991;min-height:58px}.presentation-card button{border:1px solid #c9a45b;background:transparent;color:#e8d4a9;padding:11px 14px;cursor:pointer}.presentation-card button:hover{background:#c9a45b;color:#111}.energy-map{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.energy-visual{min-height:430px;border:1px solid #303830;background:url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=85') center/cover;position:relative}.energy-node{position:absolute;border:1px solid #d7b56a;background:#08100dcc;color:#fff;padding:12px;cursor:pointer;font-size:12px}.energy-node:hover{background:#c9a45b;color:#111}.energy-info{border:1px solid #303830;background:#0b100d;padding:25px}.energy-info h3{font-size:30px;margin-top:0}.energy-info p{color:#aeb6ae}.energy-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.energy-facts div{border:1px solid #2c332d;padding:12px;color:#c8cec7}.up-modal{position:fixed;inset:0;z-index:999;display:none;background:#000b;backdrop-filter:blur(8px);padding:5vh 5vw}.up-modal.open{display:block}.up-panel{height:90vh;overflow:auto;border:1px solid #444b43;background:#090d0b;padding:38px}.up-close{float:right;background:none;border:0;color:#d7b56a;font-size:32px;cursor:pointer}.up-panel h2{font-size:clamp(36px,5vw,68px);margin:20px 0}.up-panel .up-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.up-panel .up-block{border:1px solid #303830;padding:20px}.up-panel .up-block h3{margin-top:0;color:#d7b56a}.up-panel .up-photo{height:300px;background:center/cover}.project-pick{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.project-pick button{border:1px solid #343b35;background:#0b100d;color:#bbb;padding:9px 11px;cursor:pointer}.project-pick button.active{border-color:#c9a45b;color:#e0c486}
-  @media(max-width:900px){.value-grid,.profession-grid{grid-template-columns:repeat(2,1fr)}.service-grid,.project-presentations,.energy-map,.up-panel .up-grid{grid-template-columns:1fr}.value-detail,.profession-detail{grid-template-columns:1fr}}@media(max-width:560px){.value-grid,.profession-grid{grid-template-columns:1fr}.service-card{grid-template-columns:1fr}.section{padding:75px 6vw}.hero p{font-size:18px}}
-  `;document.head.appendChild(s)}
-  function modal(){if(document.getElementById('up-modal'))return;const m=document.createElement('div');m.id='up-modal';m.className='up-modal';m.innerHTML='<div class="up-panel"><button class="up-close">×</button><div id="up-content"></div></div>';document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m||e.target.classList.contains('up-close'))m.classList.remove('open')})}
-  function addValue(){if(document.getElementById('mmw-value'))return;const sec=document.createElement('section');sec.id='mmw-value';sec.className='section upgrade-section';sec.innerHTML='<div class="section-head"><div><div class="eyebrow">MMW VALUE CHAIN</div><h2>Как зарабатывает<br><span>MMW-COMPANY.</span></h2></div><p>Семь контуров создания стоимости. Нажмите на блок, чтобы увидеть его роль, историю и экономику.</p></div><div class="value-grid">'+Object.entries(VALUE).map(([k,v])=>`<button class="value-card" data-value="${k}" style="--photo:url('${v.photo}')"><span class="photo"></span><span class="value-content"><span class="value-icon">${v.icon}</span><b>0${Object.keys(VALUE).indexOf(k)+1} · ${k}</b><strong>${v.ru}</strong><small>Открыть разбор ↗</small></span></button>`).join('')+'</div><div id="value-detail" class="value-detail" hidden></div>';document.querySelector('#system')?.after(sec);sec.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;const v=VALUE[b.dataset.value],d=sec.querySelector('#value-detail');d.hidden=false;d.innerHTML=`<div class="detail-photo" style="--photo:url('${v.photo}')"></div><div class="detail-copy"><h3>${v.icon} ${b.dataset.value} — ${v.ru}</h3><div class="history"><b>Исторический контекст</b><p>${v.history}</p></div><p>${v.text}</p></div>`;d.scrollIntoView({behavior:'smooth',block:'nearest'})})}
-  function addTeam(){if(document.getElementById('mmw-team'))return;const sec=document.createElement('section');sec.id='mmw-team';sec.className='section';sec.innerHTML='<div class="section-head"><div><div class="eyebrow">MMW PEOPLE · CAREERS</div><h2>Команда,<br><span>которая строит систему.</span></h2></div><p>У каждой профессии есть история. Нажмите на специалиста — откроется исторический факт и его роль в проекте.</p></div><div class="profession-grid">'+PROFESSIONS.map((p,i)=>`<button class="profession-card" data-prof="${i}"><span>${p[0]}</span><b>${p[1]}</b><small>История + роль в MMW ↗</small></button>`).join('')+'</div><div id="profession-detail" class="profession-detail" hidden></div>';document.querySelector('#mmw-value')?.after(sec);sec.addEventListener('click',e=>{const b=e.target.closest('[data-prof]');if(!b)return;const p=PROFESSIONS[+b.dataset.prof],d=sec.querySelector('#profession-detail');d.hidden=false;d.innerHTML=`<div class="detail-copy"><h3>${p[0]} ${p[1]}</h3><div class="history"><b>Исторический факт</b><p>${p[2]}</p></div><p>${p[3]}</p></div><div class="detail-copy"><h3>Карьерная траектория</h3><p>Стажёр → специалист → руководитель направления → Project Manager → партнёр.</p><p>В MMW специалист может подключаться к отдельному проекту, развиваться внутри системы и участвовать в создании стоимости.</p></div>`;d.scrollIntoView({behavior:'smooth',block:'nearest'})})}
-  function addServices(){if(document.getElementById('mmw-services'))return;const sec=document.createElement('section');sec.id='mmw-services';sec.className='section upgrade-section';sec.innerHTML='<div class="section-head"><div><div class="eyebrow">MMW SERVICES</div><h2>Услуги<br><span>полного цикла.</span></h2></div><p>MMW-COMPANY может подключаться к проекту на отдельном этапе или собирать полный контур развития.</p></div><div class="service-grid">'+SERVICES.map(x=>`<article class="service-card"><div class="n">${x[0]}</div><div><h3>${x[1]}</h3><p>${x[2]}</p></div></article>`).join('')+'</div>';document.querySelector('#mmw-team')?.after(sec)}
-  function addPresentations(){if(document.getElementById('mmw-presentations'))return;const sec=document.createElement('section');sec.id='mmw-presentations';sec.className='section';sec.innerHTML='<div class="section-head"><div><div class="eyebrow">MMW PROJECT LIBRARY</div><h2>Презентации<br><span>по каждому проекту.</span></h2></div><p>Для каждого проекта доступны три самостоятельных сценария: инвестор, команда и будущий клиент.</p></div><div class="project-pick">'+PROJECTS.map((p,i)=>`<button data-p="${p}" class="${i===0?'active':''}">${p}</button>`).join('')+'</div><div class="project-presentations">'+Object.entries(PRESENT).map(([k,v])=>`<article class="presentation-card"><span class="tag">${k.toUpperCase()}</span><h3>${v[0]}</h3><p>${v[1]}</p><button data-deck="${k}">Открыть презентацию ↗</button></article>`).join('')+'</div>';document.querySelector('#mmw-services')?.after(sec);let selected=PROJECTS[0];sec.addEventListener('click',e=>{const p=e.target.closest('[data-p]');if(p){selected=p.dataset.p;sec.querySelectorAll('[data-p]').forEach(x=>x.classList.remove('active'));p.classList.add('active')}const d=e.target.closest('[data-deck]');if(!d)return;const x=PRESENT[d.dataset.deck];modal();const c=document.getElementById('up-content');c.innerHTML=`<div class="eyebrow">${x[0]}</div><h2>${selected}</h2><div class="up-grid"><div class="up-block"><h3>01 · Суть</h3><p>${x[1]}</p><p>Материал предназначен для рабочей упаковки проекта и должен уточняться после проверки исходных данных, рынка, сметы, юридической структуры и финансирования.</p></div><div class="up-block"><h3>02 · Структура</h3><p>Контекст проекта → целевая аудитория → продукт → команда → экономика → этапы → риски → KPI → следующий шаг.</p></div><div class="up-block"><h3>03 · Экономика</h3><p>CAPEX / OPEX / выручка или стоимость актива / операционный результат / денежный поток / сценарии. Все показатели на сайте являются концептуальными до проведения ТЭО и due diligence.</p></div><div class="up-block"><h3>04 · Управление</h3><p>Земля, капитал, проектирование, строительство, продажи и эксплуатация объединяются в единый управляемый цикл MMW.</p></div></div>`;document.getElementById('up-modal').classList.add('open')})})}
-  function addEnergy(){if(document.getElementById('mmw-energy'))return;const sec=document.createElement('section');sec.id='mmw-energy';sec.className='section upgrade-section';sec.innerHTML='<div class="section-head"><div><div class="eyebrow">ENERGY · INDUSTRIAL</div><h2>ENERGY <span>PARK.</span></h2></div><p>Интерактивная схема концепции: генерация, сеть, промышленная площадка, сервисы и коммерческая инфраструктура.</p></div><div class="energy-map"><div class="energy-visual"><button class="energy-node" style="left:12%;top:18%" data-e="solar">☀ SOLAR GENERATION</button><button class="energy-node" style="left:58%;top:28%" data-e="grid">⚡ GRID / STORAGE</button><button class="energy-node" style="left:30%;top:62%" data-e="industry">🏭 INDUSTRIAL ZONE</button><button class="energy-node" style="left:68%;top:68%" data-e="services">◈ SERVICES</button></div><div class="energy-info"><h3 id="energy-title">Solar generation</h3><p id="energy-text">Концептуальный энергетический контур. Реальная мощность, присоединение, тарифная модель и технические параметры определяются отдельным ТЭО и grid study.</p><div class="energy-facts"><div>5 MW<br><small>концептуальная мощность</small></div><div>INDUSTRIAL<br><small>производственный контур</small></div><div>GRID<br><small>инфраструктура сети</small></div><div>SERVICES<br><small>коммерческие сервисы</small></div></div></div></div>';const target=document.querySelector('#mmw-presentations')||document.querySelector('#projects');target?.after(sec);const data={solar:['Solar generation','Генерация — базовый энергетический контур. Требуются анализ инсоляции, площадки, оборудования, присоединения и экономической модели.'],grid:['Grid / storage','Сетевой контур определяет техническую и финансовую реализуемость. Нужны условия присоединения, мощности, режимы и анализ накопителей.'],industry:['Industrial zone','Промышленная часть создаёт спрос на землю, энергию и сервисы. Модель может включать аренду/продажу площадок и инфраструктурные услуги.'],services:['Services','Операторская модель объединяет управление объектом, безопасность, эксплуатацию, сервис, цифровой мониторинг и коммерческие услуги.']};sec.addEventListener('click',e=>{const b=e.target.closest('[data-e]');if(!b)return;const x=data[b.dataset.e];sec.querySelector('#energy-title').textContent=x[0];sec.querySelector('#energy-text').textContent=x[1]})}
-  function init(){css();modal();addValue();addTeam();addServices();addPresentations();addEnergy();}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,80));else setTimeout(init,80);
+
+  const css = `
+    body{font-size:17px}
+    .clean-section{position:relative;background:#090d0b}
+    .clean-section:before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:80px 80px;opacity:.25}
+    .clean-wrap{position:relative;z-index:1}
+    .clean-intro{max-width:760px;margin:0 0 34px}
+    .clean-intro p{color:#9da69e;line-height:1.7;margin:12px 0 0}
+    .value-grid-clean{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .value-card-clean{position:relative;min-height:260px;overflow:hidden;border:1px solid #303831;background:#0b100d;color:#fff;text-align:left;padding:0;cursor:pointer}
+    .value-card-clean .bg{position:absolute;inset:0;background:var(--bg) center/cover;opacity:.34;transition:.4s}
+    .value-card-clean:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,6,.08),rgba(5,8,6,.94) 82%)}
+    .value-card-clean:hover{border-color:#c9a45b}.value-card-clean:hover .bg{transform:scale(1.05);opacity:.5}
+    .value-copy-clean{position:absolute;z-index:2;left:20px;right:20px;bottom:18px}
+    .value-copy-clean .icon{font-size:27px;color:#d7b56a;margin-bottom:12px;display:block}
+    .value-copy-clean .code{font-size:10px;letter-spacing:.16em;color:#d7b56a}
+    .value-copy-clean strong{display:block;font-size:24px;margin:5px 0}
+    .value-copy-clean small{display:block;color:#b7c0b8;line-height:1.4}
+    .detail-clean{display:grid;grid-template-columns:1fr 1.2fr;gap:22px;margin-top:16px;border:1px solid #303831;background:#0b100d;padding:18px}
+    .detail-clean[hidden]{display:none}.detail-photo-clean{min-height:270px;background:var(--bg) center/cover}.detail-text-clean{padding:10px 10px 10px 4px}.detail-text-clean h3{font-size:30px;margin:0 0 8px}.detail-text-clean p{color:#b5beb6;line-height:1.65}.detail-history-clean{margin-top:18px;border-left:2px solid #c9a45b;padding-left:15px;color:#d9ded9;line-height:1.6}
+    .clean-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .profession-clean{border:1px solid #303831;background:#0b100d;color:#fff;text-align:left;padding:20px;cursor:pointer;min-height:190px}.profession-clean:hover{border-color:#c9a45b;transform:translateY(-2px)}
+    .profession-clean .ico{font-size:28px}.profession-clean strong{display:block;font-size:19px;margin:15px 0 8px}.profession-clean small{color:#909a91;line-height:1.5}
+    .service-grid-clean{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.service-clean{display:grid;grid-template-columns:52px 1fr;gap:12px;border:1px solid #303831;background:#0b100d;padding:20px}.service-clean .n{color:#c9a45b;font-size:11px;letter-spacing:.12em}.service-clean h3{margin:0;font-size:20px}.service-clean p{margin:7px 0 0;color:#929b93;line-height:1.5}
+    .audience-clean{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.audience-clean a{display:block;border:1px solid #303831;background:#0b100d;padding:22px;color:#fff;text-decoration:none}.audience-clean a:hover{border-color:#c9a45b}.audience-clean .tag{font-size:10px;letter-spacing:.15em;color:#c9a45b}.audience-clean h3{margin:10px 0 7px;font-size:22px}.audience-clean p{margin:0;color:#929b93;line-height:1.5}
+    @media(max-width:980px){.value-grid-clean,.clean-grid-4{grid-template-columns:repeat(2,1fr)}.detail-clean{grid-template-columns:1fr}.audience-clean{grid-template-columns:1fr}}
+    @media(max-width:640px){body{font-size:16px}.value-grid-clean,.clean-grid-4,.service-grid-clean{grid-template-columns:1fr}.value-card-clean{min-height:220px}.detail-photo-clean{min-height:200px}.clean-intro{margin-bottom:24px}}
+  `;
+
+  function injectCss(){
+    if(document.getElementById('mmw-clean-css')) return;
+    const s=document.createElement('style');s.id='mmw-clean-css';s.textContent=css;document.head.appendChild(s);
+  }
+
+  function sectionShell(id,eyebrow,title,lead,body){
+    const s=document.createElement('section');s.className='section clean-section';s.id=id;
+    s.innerHTML=`<div class="clean-wrap"><div class="clean-intro"><div class="eyebrow">${eyebrow}</div><h2>${title}</h2><p>${lead}</p></div>${body}</div>`;
+    return s;
+  }
+
+  function buildValueSection(){
+    const cards=VALUE.map((v,i)=>`<button class="value-card-clean" data-value-index="${i}" style="--bg:url('${v[6]||IMG[v[0]]}')"><span class="bg"></span><span class="value-copy-clean"><span class="icon">${v[2]}</span><span class="code">0${i+1} · ${v[0]}</span><strong>${v[1]}</strong><small>${v[3]}</small></span></button>`).join('');
+    const s=sectionShell('value-chain','02 / VALUE CHAIN','Как MMW-COMPANY создаёт стоимость.','Семь последовательных контуров. Каждый отвечает за свой ресурс, результат и источник ценности.',`<div class="value-grid-clean">${cards}</div><div id="value-detail-clean" class="detail-clean" hidden></div>`);
+    s.querySelectorAll('[data-value-index]').forEach(btn=>btn.addEventListener('click',()=>{
+      const v=VALUE[Number(btn.dataset.valueIndex)],d=s.querySelector('#value-detail-clean');
+      d.style.setProperty('--bg',`url('${IMG[v[0]]}')`);d.innerHTML=`<div class="detail-photo-clean"></div><div class="detail-text-clean"><div class="eyebrow">${v[0]}</div><h3>${v[1]}</h3><p>${v[4]}</p><div class="detail-history-clean"><b>Короткий исторический факт</b><br>${v[5]}</div></div>`;d.hidden=false;
+      d.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }));
+    return s;
+  }
+
+  function buildTeamSection(){
+    const cards=PROFESSIONS.map((p,i)=>`<button class="profession-clean" data-prof-index="${i}"><span class="ico">${p[0]}</span><strong>${p[1]}</strong><small>История профессии · роль в MMW ↗</small></button>`).join('');
+    const s=sectionShell('team','06 / TEAM','Команда, которая строит систему.','Не просто должности. Это профессии с историей, ответственностью и понятным местом в проектном цикле.',`<div class="clean-grid-4">${cards}</div><div id="profession-detail-clean" class="detail-clean" hidden></div>`);
+    s.querySelectorAll('[data-prof-index]').forEach(btn=>btn.addEventListener('click',()=>{
+      const p=PROFESSIONS[Number(btn.dataset.profIndex)],d=s.querySelector('#profession-detail-clean');
+      d.style.setProperty('--bg',`url('${IMG.TEAM}')`);d.innerHTML=`<div class="detail-photo-clean"></div><div class="detail-text-clean"><div class="eyebrow">${p[1]}</div><h3>${p[0]} ${p[1]}</h3><p>${p[2]}</p><div class="detail-history-clean"><b>Роль в MMW-COMPANY</b><br>${p[3]}</div></div>`;d.hidden=false;d.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }));
+    return s;
+  }
+
+  function buildServicesSection(){
+    const cards=SERVICES.map(x=>`<article class="service-clean"><div class="n">${x[0]}</div><div><h3>${x[1]}</h3><p>${x[2]}</p></div></article>`).join('');
+    return sectionShell('services','05 / SERVICES','Услуги MMW-COMPANY.','От первичной идеи и земли до финансовой архитектуры, реализации, продаж и операционного управления.',`<div class="service-grid-clean">${cards}</div>`);
+  }
+
+  function buildAudienceSection(){
+    return sectionShell('routes','07 / PROJECT ROUTES','Три маршрута для каждого проекта.','Один бренд — три разные задачи. Не смешиваем язык инвестора, команды и будущего клиента.',`<div class="audience-clean"><a href="/project/aladin?deck=investor#presentations"><span class="tag">💰 INVESTOR</span><h3>Инвестор</h3><p>Экономика, структура сделки, риски, капитал и сценарии.</p></a><a href="/project/aladin?deck=team#presentations"><span class="tag">👷 TEAM</span><h3>Команда</h3><p>Роли, развитие, управление, компетенции и партнёрская модель.</p></a><a href="/project/aladin?deck=buyer#presentations"><span class="tag">🏡 BUYER</span><h3>Покупатель</h3><p>Продукт, среда жизни, преимущества, сервис и путь клиента.</p></a></div>`);
+  }
+
+  function cleanExisting(){
+    document.querySelectorAll('#value-chain,#team,#services,#routes').forEach(x=>x.remove());
+    const oldPartner=[...document.querySelectorAll('section')].find(s=>s.querySelector('.partner-cards'));
+    if(oldPartner) oldPartner.remove();
+  }
+
+  function mount(){
+    injectCss();
+    cleanExisting();
+    const system=document.getElementById('system');
+    const portfolio=document.getElementById('projects');
+    const lab=document.getElementById('lab');
+    const order=document.getElementById('order');
+    if(!system||!portfolio||!lab||!order) return;
+
+    system.after(buildValueSection());
+    portfolio.after(buildServicesSection());
+    lab.after(buildAudienceSection());
+    // Team is deliberately placed after services and before ORDER: capability follows offer, then action.
+    const services=document.getElementById('services');
+    services.after(buildTeamSection());
+
+    const nav=document.querySelector('.nav nav');
+    if(nav && !document.getElementById('team-nav')){
+      const a=document.createElement('a');a.id='team-nav';a.href='#team';a.textContent='Команда';nav.insertBefore(a,nav.querySelector('.nav-cta')||null);
+    }
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mount); else mount();
 })();

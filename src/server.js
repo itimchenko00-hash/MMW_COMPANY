@@ -5,7 +5,12 @@ const PORT = process.env.PORT || 10000;
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Dedicated ALADIN buyer presentation. The main MMW-COMPANY site remains unchanged.
+// ALADIN is a core section of the public MMW-COMPANY site.
+app.get('/aladin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/aladin-hub.html'));
+});
+
+// Dedicated ALADIN buyer presentation.
 app.get('/aladin-pokupateli', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/aladin-buyers.html'));
 });

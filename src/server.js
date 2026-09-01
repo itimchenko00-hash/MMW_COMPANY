@@ -12,6 +12,7 @@ const PRESENTATION_LINKS = path.join(PUBLIC_DIR, 'presentation-links.js');
 const ALADIN_CONTENT = path.join(PUBLIC_DIR, 'aladin-content-v1.js');
 const NEXUS_CONTENT = path.join(PUBLIC_DIR, 'nexus-content-v1.js');
 const AGROHUB_PRESENTATIONS = path.join(PUBLIC_DIR, 'agrohub-presentations-v1.html');
+const ENERGY_PRESENTATIONS = path.join(PUBLIC_DIR, 'energy-presentations-v1.html');
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -30,6 +31,7 @@ app.get('/project/:slug', sendProjectPresentation);
 function sendProjectPresentation(req, res) {
   const slug = req.params.slug || (req.path === '/aladin' ? 'aladin' : '');
   if (slug === 'agrohub') return res.sendFile(AGROHUB_PRESENTATIONS);
+  if (slug === 'energy') return res.sendFile(ENERGY_PRESENTATIONS);
 
   fs.readFile(PROJECT_PRESENTATIONS, 'utf8', (err, html) => {
     if (err) return res.status(500).send('Presentation engine unavailable');
@@ -57,6 +59,7 @@ app.get('/health', (req, res) => res.json({
   aladin_content: 'team+buyer-v1',
   nexus_content: 'investor+team+buyer-v1',
   agrohub_content: 'investor+team+buyer-v1',
+  energy_content: 'investor+team+buyer-v1',
   source: 'repository-root',
   architecture: 'main-site -> projects -> project-specific-presentations -> MMW-ORDER'
 }));

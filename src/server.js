@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 10000;
 
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const HOME = path.join(PUBLIC_DIR, 'index.html');
-const PROJECT_PRESENTATIONS = path.join(PUBLIC_DIR, 'project-presentations.html');
+const PROJECT_PRESENTATIONS = path.join(PUBLIC_DIR, 'project-presentations-v3.html');
 
 // Canonical MMW-COMPANY runtime. HTML is never cached so Render/browser caches
 // cannot mask a newly published project presentation.
@@ -23,8 +23,8 @@ app.use(express.static(PUBLIC_DIR, { maxAge: '1h' }));
 // Canonical MMW-COMPANY public site.
 app.get('/', (req, res) => res.sendFile(HOME));
 
-// Every project uses the same presentation engine and gets three audiences:
-// investor, team/specialists and buyer/client.
+// Every project uses the v3 presentation engine: three audiences, 15 slides,
+// project-specific content, visuals, details, roadmap and responsive controls.
 app.get('/aladin', (req, res) => res.sendFile(PROJECT_PRESENTATIONS));
 app.get('/project/:slug', (req, res) => res.sendFile(PROJECT_PRESENTATIONS));
 
@@ -40,7 +40,7 @@ app.get('/aladin-pokupateli', (req, res) => res.redirect('/project/aladin?mode=b
 // company presentation layer.
 app.get('/order', (req, res) => res.redirect('https://mmw-order.onrender.com'));
 
-app.get('/health', (req, res) => res.json({ service: 'MMW-COMPANY', status: 'ok', architecture: 'main-site -> projects -> three-audience-presentations -> MMW-ORDER' }));
+app.get('/health', (req, res) => res.json({ service: 'MMW-COMPANY', status: 'ok', presentation_engine: 'v3', architecture: 'main-site -> projects -> three-audience-presentations -> MMW-ORDER' }));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`MMW-COMPANY listening on ${PORT}`);

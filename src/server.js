@@ -8,30 +8,17 @@ const HOME = path.join(PUBLIC_DIR, 'index.html');
 
 app.use(express.static(PUBLIC_DIR));
 
-// Canonical home page: MMW-COMPANY always opens at the root URL.
-app.get('/', (req, res) => {
-  res.sendFile(HOME);
-});
+// MMW-COMPANY is the canonical public site at the Render primary URL.
+app.get('/', (req, res) => res.sendFile(HOME));
 
-// ALADIN is a core project of the MMW-COMPANY platform.
-app.get('/aladin', (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'aladin-hub.html'));
-});
+// Interactive flagship/project pages.
+app.get('/aladin', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'project.html')));
+app.get('/project/:slug', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'project.html')));
 
-// Dedicated ALADIN buyer presentation.
-app.get('/aladin-pokupateli', (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'aladin-buyers.html'));
-});
-
-// MMW-COMPANY project portfolio: ALADIN + four demonstration projects.
-app.get('/projects', (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'projects-v2.html'));
-});
-
-// Friendly alias for the portfolio.
-app.get('/portfolio', (req, res) => {
-  res.redirect('/projects');
-});
+// Portfolio and legacy presentation routes.
+app.get('/projects', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'projects-v2.html')));
+app.get('/portfolio', (req, res) => res.redirect('/projects'));
+app.get('/aladin-pokupateli', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'aladin-buyers.html')));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`MMW-COMPANY listening on ${PORT}`);

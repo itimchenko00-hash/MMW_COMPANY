@@ -14,6 +14,7 @@ const NEXUS_CONTENT = path.join(PUBLIC_DIR, 'nexus-content-v1.js');
 const AGROHUB_PRESENTATIONS = path.join(PUBLIC_DIR, 'agrohub-presentations-v1.html');
 const ENERGY_PRESENTATIONS = path.join(PUBLIC_DIR, 'energy-presentations-v1.html');
 const ALADIN_PAGE = path.join(PUBLIC_DIR, 'aladin.html');
+const NEXUS_PAGE = path.join(PUBLIC_DIR, 'nexus.html');
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -26,13 +27,20 @@ app.use(express.static(ROOT_DIR, { maxAge: 0 }));
 app.use('/public', express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.get('/', (req, res) => res.sendFile(HOME));
 
-// ALADIN has a clean project landing page. The detailed slide engine remains available separately.
 app.get('/aladin', (req, res) => res.sendFile(ALADIN_PAGE));
 app.get('/project/aladin', (req, res) => {
   if (req.query.deck) return sendProjectPresentation({ ...req, params: { slug: 'aladin' } }, res);
   return res.sendFile(ALADIN_PAGE);
 });
 app.get('/aladin-presentation', (req, res) => sendProjectPresentation({ ...req, params: { slug: 'aladin' } }, res));
+
+// NEXUS has a clean project landing page. Its detailed presentation engine remains available through deck links.
+app.get('/nexus', (req, res) => res.sendFile(NEXUS_PAGE));
+app.get('/project/nexus', (req, res) => {
+  if (req.query.deck) return sendProjectPresentation({ ...req, params: { slug: 'nexus' } }, res);
+  return res.sendFile(NEXUS_PAGE);
+});
+
 app.get('/project/:slug', sendProjectPresentation);
 
 function sendProjectPresentation(req, res) {
@@ -60,18 +68,11 @@ app.get('/aladin-pokupateli', (req, res) => res.redirect('/aladin-presentation?d
 app.get('/order', (req, res) => res.redirect('https://mmw-order.onrender.com'));
 
 app.get('/health', (req, res) => res.json({
-  service: 'MMW-COMPANY',
-  status: 'ok',
-  presentation_engine: 'v3',
-  aladin_page: 'clean-project-v1',
-  aladin_content: 'team+buyer-v1',
-  nexus_content: 'investor+team+buyer-v1',
-  agrohub_content: 'investor+team+buyer-v1',
-  energy_content: 'investor+team+buyer-v1',
-  source: 'repository-root',
-  architecture: 'main-site -> projects -> clean project page -> project presentations -> MMW-ORDER'
+  service: 'MMW-COMPANY', status: 'ok', presentation_engine: 'v3',
+  aladin_page: 'clean-project-v1', nexus_page: 'clean-project-v1',
+  aladin_content: 'team+buyer-v1', nexus_content: 'investor+team+buyer-v1',
+  agrohub_content: 'investor+team+buyer-v1', energy_content: 'investor+team+buyer-v1',
+  source: 'repository-root', architecture: 'main-site -> projects -> clean project page -> project presentations -> MMW-ORDER'
 }));
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`MMW-COMPANY listening on ${PORT}`);
-});
+app.listen(PORT, '0.0.0.0', () => console.log(`MMW-COMPANY listening on ${PORT}`));

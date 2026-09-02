@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 const ROOT = path.join(__dirname, '..');
 
-const BUILD = '2026-09-02-products-v2';
+const BUILD = '2026-09-02-system-v3';
 const pages = {
   home: path.join(ROOT, 'company/website/mmw-company-interactive-v11.html'),
   aladin: path.join(ROOT, 'projects/ALADIN/website/aladin-presentation-suite.html'),
@@ -17,7 +18,7 @@ const pages = {
 };
 
 for (const [name, file] of Object.entries(pages)) {
-  if (!require('fs').existsSync(file)) {
+  if (!fs.existsSync(file)) {
     console.error(`[MMW-FATAL] Missing canonical page: ${name} -> ${file}`);
     process.exit(1);
   }
@@ -33,13 +34,25 @@ app.use((req, res, next) => {
   next();
 });
 
-function sendPage(file, res) {
-  res.sendFile(file, err => {
-    if (err && !res.headersSent) res.status(err.statusCode || 404).send('MMW-COMPANY: page not found');
+function sendPage(file, res, refineHome = false) {
+  if (!refineHome) {
+    return res.sendFile(file, err => {
+      if (err && !res.headersSent) res.status(err.statusCode || 404).send('MMW-COMPANY: page not found');
+    });
+  }
+
+  fs.readFile(file, 'utf8', (err, html) => {
+    if (err) return res.status(404).send('MMW-COMPANY: page not found');
+
+    html = html
+      .replace('<span>Идея, актив или задача</span>', '<span>Задача и концепция</span>')
+      .replace('<span>Roadmap, контроль и запуск</span>', '<span>План запуска</span>');
+
+    res.type('html').send(html);
   });
 }
 
-app.get('/', (req, res) => sendPage(pages.home, res));
+app.get('/', (req, res) => sendPage(pages.home, res, true));
 app.get(['/index.html', '/company', '/company/', '/company.html', '/home-v2'], (req, res) => res.redirect(308, '/'));
 
 app.get(['/aladin', '/aladin/'], (req, res) => sendPage(pages.aladin, res));

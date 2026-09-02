@@ -1,0 +1,1 @@
+(()=>{if(window.__ENERGY_PARK_LAUNCH)return;window.__ENERGY_PARK_LAUNCH=1;document.documentElement.dataset.project='ENERGY PARK';document.title='ENERGY PARK · MMW-COMPANY';})();

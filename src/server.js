@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 const ROOT = path.join(__dirname, '..');
 
-const BUILD = '2026-09-02-system-visual-v4';
+const BUILD = '2026-09-02-system-visual-v5';
 const pages = {
   home: path.join(ROOT, 'company/website/mmw-company-interactive-v11.html'),
   aladin: path.join(ROOT, 'projects/ALADIN/website/aladin-presentation-suite.html'),
@@ -76,12 +76,12 @@ function sendPage(file, res, refineHome = false) {
     ];
 
     const originalNodes = [
-      '<div class="node"><b>01</b><strong>IDEA</strong><span>Идея, актив или задача</span></div>',
+      '<div class="node"><b>01</b><strong>IDEA</strong><span>Задача и концепция</span></div>',
       '<div class="node"><b>02</b><strong>STRATEGY</strong><span>Рынок, цели и позиционирование</span></div>',
       '<div class="node"><b>03</b><strong>BUSINESS MODEL</strong><span>Продукт, клиенты и доходы</span></div>',
       '<div class="node"><b>04</b><strong>MODEL</strong><span>CAPEX, OPEX, Cash Flow и KPI</span></div>',
       '<div class="node"><b>05</b><strong>SYSTEM</strong><span>Команда, процессы и документы</span></div>',
-      '<div class="node"><b>06</b><strong>LAUNCH</strong><span>Roadmap, контроль и запуск</span></div>'
+      '<div class="node"><b>06</b><strong>LAUNCH</strong><span>План запуска</span></div>'
     ];
 
     nodes.forEach((node, i) => {

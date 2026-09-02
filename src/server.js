@@ -6,10 +6,10 @@ const PORT=process.env.PORT||10000;
 const ROOT=path.join(__dirname,'..');
 const PUBLIC=path.join(ROOT,'public');
 const PROJECTS=path.join(ROOT,'projects');
-const BUILD='2026-09-02-mmw-company-nexus-logistics-v1';
+const BUILD='2026-09-02-mmw-company-carpathia-v1';
 app.disable('x-powered-by');
 app.use((req,res,next)=>{res.set('Cache-Control','no-store,no-cache,must-revalidate,proxy-revalidate');res.set('Pragma','no-cache');res.set('Expires','0');res.set('X-MMW-Build',BUILD);res.set('X-MMW-Repo','itimchenko00-hash/MMW_COMPANY');res.set('X-MMW-Projects','portfolio-pages-independent');res.set('X-MMW-International','global-platform');next()});
-function sendHtml(file,res){fs.readFile(file,'utf8',(err,html)=>{if(err)return res.status(404).send('Page not found');let scripts='<script src="/public/mmw-language.js"></script>';const normalized=file.replace(/\\/g,'/');if(normalized.includes('/projects/NEXUS-WORK/'))scripts+='<script src="/public/nexus-work-product.js"></script><script src="/public/nexus-work-economics.js"></script>';if(normalized.includes('/projects/NEXUS-LOGISTICS/'))scripts+='<script src="/public/nexus-logistics-upgrade.js"></script>';if(!html.includes('/public/mmw-language.js'))html=html.replace('</head>',scripts+'</head>');res.type('html').send(html)})}
+function sendHtml(file,res){fs.readFile(file,'utf8',(err,html)=>{if(err)return res.status(404).send('Page not found');let scripts='<script src="/public/mmw-language.js"></script>';const normalized=file.replace(/\\/g,'/');if(normalized.includes('/projects/NEXUS-WORK/'))scripts+='<script src="/public/nexus-work-product.js"></script><script src="/public/nexus-work-economics.js"></script>';if(normalized.includes('/projects/NEXUS-LOGISTICS/'))scripts+='<script src="/public/nexus-logistics-upgrade.js"></script>';if(normalized.includes('/projects/CARPATHIA/'))scripts+='<script src="/public/carpathia-upgrade.js"></script>';if(!html.includes('/public/mmw-language.js'))html=html.replace('</head>',scripts+'</head>');res.type('html').send(html)})}
 function safeProjectFile(req,res,next){const rel=req.path.replace(/^\/+/, '');if(!rel.toLowerCase().endsWith('.html'))return next();const file=path.resolve(PROJECTS,rel);if(!file.startsWith(path.resolve(PROJECTS)+path.sep)||!fs.existsSync(file))return next();return sendHtml(file,res)}
 app.use('/projects',safeProjectFile);
 app.get('/',(req,res)=>sendHtml(path.join(PUBLIC,'mmw-company-master-v1.html'),res));
@@ -19,13 +19,7 @@ app.get(['/international','/international/','/international.html'],(req,res)=>se
 app.get(['/global'],(req,res)=>res.redirect('/international'));
 const pages={about:'about-v1.html',services:'services-v1.html',products:'products-v2.html',investment:'investment-v1.html',team:'team-v1.html',contact:'contact-v1.html'};
 Object.entries(pages).forEach(([route,file])=>app.get(['/'+route,'/'+route+'/' ],(req,res)=>sendHtml(path.join(PUBLIC,file),res)));
-const aliases={
-'/aladin':'projects/ALADIN/website/aladin.html','/aladin-v2':'projects/ALADIN/website/aladin-v2.html',
-'/nexus':'projects/NEXUS-WORK/website/nexus-presentation-suite.html',
-'/nexus-logistics':'projects/NEXUS-LOGISTICS/website/nexus-logistics-presentation-suite.html','/nexus-logistics-v2':'projects/NEXUS-LOGISTICS/website/nexus-logistics-presentation-suite.html',
-'/carpathia':'projects/CARPATHIA/website/carpathia-presentation-suite.html','/carpathia-master':'projects/CARPATHIA/website/carpathia-presentation-suite.html','/carpathia-feasibility':'projects/CARPATHIA/website/carpathia-feasibility.html',
-'/agrohub':'projects/AGROHUB/website/agrohub-presentation-suite.html',
-'/energy':'projects/ENERGY-PARK/website/energy-presentations-v1.html','/energy-master':'projects/ENERGY-PARK/website/energy-presentations-v1.html'};
+const aliases={'/aladin':'projects/ALADIN/website/aladin.html','/aladin-v2':'projects/ALADIN/website/aladin-v2.html','/nexus':'projects/NEXUS-WORK/website/nexus-presentation-suite.html','/nexus-logistics':'projects/NEXUS-LOGISTICS/website/nexus-logistics-presentation-suite.html','/nexus-logistics-v2':'projects/NEXUS-LOGISTICS/website/nexus-logistics-presentation-suite.html','/carpathia':'projects/CARPATHIA/website/carpathia-presentation-suite.html','/carpathia-master':'projects/CARPATHIA/website/carpathia-presentation-suite.html','/carpathia-feasibility':'projects/CARPATHIA/website/carpathia-feasibility.html','/agrohub':'projects/AGROHUB/website/agrohub-presentation-suite.html','/energy':'projects/ENERGY-PARK/website/energy-presentations-v1.html','/energy-master':'projects/ENERGY-PARK/website/energy-presentations-v1.html'};
 Object.entries(aliases).forEach(([route,file])=>app.get([route,route+'/'],(req,res)=>sendHtml(path.join(ROOT,file),res)));
 app.get('/project-presentation-hub.html',(req,res)=>sendHtml(path.join(PUBLIC,'project-presentation-hub.html'),res));
 app.get('/projects',(req,res)=>sendHtml(path.join(PUBLIC,'projects-v5.html'),res));

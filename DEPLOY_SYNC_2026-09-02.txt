@@ -1,6 +1,21 @@
-MMW-COMPANY deployment synchronization marker.
+MMW-COMPANY CANONICAL DEPLOYMENT
+Date: 2026-09-02
+
 Canonical repository: itimchenko00-hash/MMW_COMPANY
 Canonical branch: main
-Homepage: public/home-v10.html
-Projects: ALADIN, NEXUS WORK, NEXUS LOGISTICS, CARPATHIA ECO LODGE, AGROHUB, ENERGY PARK
-Purpose: force a clean Render auto-deploy after route/project consolidation. Do not delete homepage or MMW-ORDER.
+Canonical Render service: mmw-aladin
+Canonical service URL: https://mmw-aladin.onrender.com
+
+All MMW-COMPANY projects are consolidated here:
+- MMW-COMPANY main
+- ALADIN
+- NEXUS WORK
+- NEXUS LOGISTICS
+- CARPATHIA ECO LODGE
+- AGROHUB
+- ENERGY PARK
+
+Routes are served by the single MMW-COMPANY server in this repository.
+MMW-ORDER is intentionally excluded and remains on its separate repository/service.
+
+Purpose: canonical consolidation marker and Render auto-deploy trigger.

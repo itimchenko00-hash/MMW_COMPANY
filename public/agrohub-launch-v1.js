@@ -1,0 +1,1 @@
+(()=>{if(window.__AGROHUB_LAUNCH)return;window.__AGROHUB_LAUNCH=1;document.documentElement.dataset.project='AGROHUB';document.title='AGROHUB · MMW-COMPANY';})();

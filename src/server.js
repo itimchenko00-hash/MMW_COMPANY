@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 const ROOT = path.join(__dirname, '..');
 
-const BUILD = '2026-09-02-clean-structure-v1';
+const BUILD = '2026-09-02-products-v2';
 const pages = {
   home: path.join(ROOT, 'company/website/mmw-company-interactive-v11.html'),
   aladin: path.join(ROOT, 'projects/ALADIN/website/aladin-presentation-suite.html'),

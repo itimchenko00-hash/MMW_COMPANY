@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /preview/
-Disallow: /health
-Disallow: /__mmw-version
-Sitemap: https://mmw-company-prm5.onrender.com/sitemap.xml

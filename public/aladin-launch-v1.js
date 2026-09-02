@@ -1,1 +1,0 @@
-(()=>{if(window.__ALADIN_LAUNCH)return;window.__ALADIN_LAUNCH=1;document.documentElement.dataset.project='ALADIN';document.title='ALADIN · MMW-COMPANY';})();

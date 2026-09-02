@@ -1,1 +1,0 @@
-(()=>{if(window.__NEXUS_LOGISTICS_LAUNCH)return;window.__NEXUS_LOGISTICS_LAUNCH=1;document.documentElement.dataset.project='NEXUS LOGISTICS';document.title='NEXUS LOGISTICS · MMW-COMPANY';})();

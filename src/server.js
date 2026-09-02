@@ -8,7 +8,7 @@ const PUBLIC=path.join(ROOT,'public');
 const PROJECTS=path.join(ROOT,'projects');
 const MAIN_FILE='company/website/mmw-company-interactive-v11.html';
 const MAIN_PATH=path.join(ROOT,MAIN_FILE);
-const BUILD='2026-09-02-mmW-individual-v17';
+const BUILD='2026-09-02-mmW-individual-v18';
 if(!fs.existsSync(MAIN_PATH)){console.error(`[MMW-FATAL] Missing canonical home page: ${MAIN_PATH}`);process.exit(1)}
 app.disable('x-powered-by');
 app.use((req,res,next)=>{res.set('Cache-Control','no-store,no-cache,must-revalidate,proxy-revalidate,max-age=0');res.set('Pragma','no-cache');res.set('Expires','0');res.set('X-MMW-Build',BUILD);res.set('X-MMW-Repo','itimchenko00-hash/MMW_COMPANY');next()});

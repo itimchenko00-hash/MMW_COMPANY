@@ -6,10 +6,10 @@ const PORT=process.env.PORT||10000;
 const ROOT=path.join(__dirname,'..');
 const PUBLIC=path.join(ROOT,'public');
 const PROJECTS=path.join(ROOT,'projects');
-const MAIN_FILE='company/website/home-v10.html';
+const MAIN_FILE='company/website/mmw-company-interactive-v11.html';
 const MAIN_PATH=path.join(ROOT,MAIN_FILE);
-const BUILD='2026-09-02-mmW-interactive-home-v10';
-// AGROHUB interactive compact presentation v1
+const BUILD='2026-09-02-mmW-interactive-home-v11';
+// MMW-COMPANY interactive presentation v11
 if(!fs.existsSync(MAIN_PATH)){console.error(`[MMW-FATAL] Missing canonical home page: ${MAIN_PATH}`);process.exit(1)}
 app.disable('x-powered-by');
 app.use((req,res,next)=>{res.set('Cache-Control','no-store,no-cache,must-revalidate,proxy-revalidate');res.set('Pragma','no-cache');res.set('Expires','0');res.set('X-MMW-Build',BUILD);res.set('X-MMW-Repo','itimchenko00-hash/MMW_COMPANY');next()});

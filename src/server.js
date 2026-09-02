@@ -8,7 +8,7 @@ const PUBLIC=path.join(ROOT,'public');
 const PROJECTS=path.join(ROOT,'projects');
 const MAIN_FILE='company/website/mmw-company-interactive-v11.html';
 const MAIN_PATH=path.join(ROOT,MAIN_FILE);
-const BUILD='2026-09-02-mmW-intelligent-v15';
+const BUILD='2026-09-02-mmW-intelligent-v16';
 if(!fs.existsSync(MAIN_PATH)){console.error(`[MMW-FATAL] Missing canonical home page: ${MAIN_PATH}`);process.exit(1)}
 app.disable('x-powered-by');
 app.use((req,res,next)=>{res.set('Cache-Control','no-store,no-cache,must-revalidate,proxy-revalidate,max-age=0');res.set('Pragma','no-cache');res.set('Expires','0');res.set('X-MMW-Build',BUILD);res.set('X-MMW-Repo','itimchenko00-hash/MMW_COMPANY');next()});
@@ -18,9 +18,7 @@ function sendHtml(file,res){
     if(err)return res.status(404).send('MMW-COMPANY: page read error');
     const normalized=file.replace(/\\/g,'/');
     const add=(src)=>{if(!html.includes(src))html=html.replace('</head>',`<script src="${src}?v=${encodeURIComponent(BUILD)}"></script></head>`)};
-    add('/public/mmw-language.js');
-    add('/public/mmw-intelligence-v1.js');
-    add('/public/mmw-design-v2.js');
+    add('/public/mmw-language.js');add('/public/mmw-intelligence-v1.js');add('/public/mmw-design-v2.js');add('/public/mmw-language-fix-v1.js');
     if(!normalized.includes('/projects/ALADIN/'))add('/public/mmw-site-unifier.js');
     if(normalized.includes('/projects/NEXUS-WORK/')){add('/public/nexus-work-product.js');add('/public/nexus-work-economics.js')}
     if(normalized.includes('/projects/NEXUS-LOGISTICS/')){add('/public/nexus-logistics-upgrade.js');add('/public/nexus-logistics-product-economics.js')}

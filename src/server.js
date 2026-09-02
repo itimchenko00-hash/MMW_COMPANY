@@ -6,10 +6,10 @@ const PORT=process.env.PORT||10000;
 const ROOT=path.join(__dirname,'..');
 const PUBLIC=path.join(ROOT,'public');
 const PROJECTS=path.join(ROOT,'projects');
-const BUILD='2026-09-02-mmw-company-nexus-product-v2';
+const BUILD='2026-09-02-mmw-company-nexus-logistics-v1';
 app.disable('x-powered-by');
 app.use((req,res,next)=>{res.set('Cache-Control','no-store,no-cache,must-revalidate,proxy-revalidate');res.set('Pragma','no-cache');res.set('Expires','0');res.set('X-MMW-Build',BUILD);res.set('X-MMW-Repo','itimchenko00-hash/MMW_COMPANY');res.set('X-MMW-Projects','portfolio-pages-independent');res.set('X-MMW-International','global-platform');next()});
-function sendHtml(file,res){fs.readFile(file,'utf8',(err,html)=>{if(err)return res.status(404).send('Page not found');let scripts='<script src="/public/mmw-language.js"></script>';const normalized=file.replace(/\\/g,'/');if(normalized.includes('/projects/NEXUS-WORK/'))scripts+='<script src="/public/nexus-work-product.js"></script><script src="/public/nexus-work-economics.js"></script>';if(!html.includes('/public/mmw-language.js'))html=html.replace('</head>',scripts+'</head>');res.type('html').send(html)})}
+function sendHtml(file,res){fs.readFile(file,'utf8',(err,html)=>{if(err)return res.status(404).send('Page not found');let scripts='<script src="/public/mmw-language.js"></script>';const normalized=file.replace(/\\/g,'/');if(normalized.includes('/projects/NEXUS-WORK/'))scripts+='<script src="/public/nexus-work-product.js"></script><script src="/public/nexus-work-economics.js"></script>';if(normalized.includes('/projects/NEXUS-LOGISTICS/'))scripts+='<script src="/public/nexus-logistics-upgrade.js"></script>';if(!html.includes('/public/mmw-language.js'))html=html.replace('</head>',scripts+'</head>');res.type('html').send(html)})}
 function safeProjectFile(req,res,next){const rel=req.path.replace(/^\/+/, '');if(!rel.toLowerCase().endsWith('.html'))return next();const file=path.resolve(PROJECTS,rel);if(!file.startsWith(path.resolve(PROJECTS)+path.sep)||!fs.existsSync(file))return next();return sendHtml(file,res)}
 app.use('/projects',safeProjectFile);
 app.get('/',(req,res)=>sendHtml(path.join(PUBLIC,'mmw-company-master-v1.html'),res));

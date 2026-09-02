@@ -1,0 +1,1 @@
+(()=>{if(window.__NEXUS_WORK_LAUNCH)return;window.__NEXUS_WORK_LAUNCH=1;document.documentElement.dataset.project='NEXUS WORK';document.title='NEXUS WORK · MMW-COMPANY';})();

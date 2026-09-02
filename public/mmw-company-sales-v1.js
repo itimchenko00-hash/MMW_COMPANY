@@ -1,0 +1,1 @@
+(()=>{if(window.__MMW_COMPANY_SALES)return;window.__MMW_COMPANY_SALES=1;document.documentElement.dataset.mmwProject='company';document.title='MMW-COMPANY · Development Platform';})();

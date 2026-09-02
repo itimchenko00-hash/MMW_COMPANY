@@ -1,0 +1,6 @@
+MMW-COMPANY deployment synchronization marker.
+Canonical repository: itimchenko00-hash/MMW_COMPANY
+Canonical branch: main
+Homepage: public/home-v10.html
+Projects: ALADIN, NEXUS WORK, NEXUS LOGISTICS, CARPATHIA ECO LODGE, AGROHUB, ENERGY PARK
+Purpose: force a clean Render auto-deploy after route/project consolidation. Do not delete homepage or MMW-ORDER.

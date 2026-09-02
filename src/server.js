@@ -8,13 +8,13 @@ const PUBLIC=path.join(ROOT,'public');
 const PROJECTS=path.join(ROOT,'projects');
 const MAIN_FILE='mmw-company-home-v2.html';
 const MAIN_PATH=path.join(PUBLIC,MAIN_FILE);
-const BUILD='2026-09-02-mmW-nexus-logistics-v3';
+const BUILD='2026-09-02-mmW-energy-park-ready';
 if(!fs.existsSync(MAIN_PATH)){console.error(`[MMW-FATAL] Missing canonical home page: ${MAIN_PATH}`);process.exit(1)}
 app.disable('x-powered-by');
 app.use((req,res,next)=>{res.set('Cache-Control','no-store,no-cache,must-revalidate,proxy-revalidate');res.set('Pragma','no-cache');res.set('Expires','0');res.set('X-MMW-Build',BUILD);res.set('X-MMW-Repo','itimchenko00-hash/MMW_COMPANY');next()});
 function sendHtml(file,res){fs.readFile(file,'utf8',(err,html)=>{if(err)return res.status(404).send('Page not found');let scripts='<script src="/public/mmw-language.js"></script>';const normalized=file.replace(/\\/g,'/');const isAladin=normalized.includes('/projects/ALADIN/');if(!isAladin)scripts+='<script src="/public/mmw-site-unifier.js"></script>';if(normalized.includes('/projects/NEXUS-WORK/'))scripts+='<script src="/public/nexus-work-product.js"></script><script src="/public/nexus-work-economics.js"></script>';if(normalized.includes('/projects/NEXUS-LOGISTICS/'))scripts+='<script src="/public/nexus-logistics-upgrade.js"></script><script src="/public/nexus-logistics-product-economics.js"></script>';if(normalized.includes('/projects/CARPATHIA/'))scripts+='<script src="/public/carpathia-upgrade.js"></script>';if(!html.includes('/public/mmw-language.js'))html=html.replace('</head>',scripts+'</head>');res.type('html').send(html)})}
 function servePublic(file,res){return sendHtml(path.join(PUBLIC,file),res)}
-function safeProjectFile(req,res,next){const rel=req.path.replace(/^\\/+/, '');if(!rel.toLowerCase().endsWith('.html'))return next();const file=path.resolve(PROJECTS,rel);if(!file.startsWith(path.resolve(PROJECTS)+path.sep)||!fs.existsSync(file))return next();return sendHtml(file,res)}
+function safeProjectFile(req,res,next){const rel=req.path.replace(/^\/+/, '');if(!rel.toLowerCase().endsWith('.html'))return next();const file=path.resolve(PROJECTS,rel);if(!file.startsWith(path.resolve(PROJECTS)+path.sep)||!fs.existsSync(file))return next();return sendHtml(file,res)}
 app.use('/projects',safeProjectFile);
 app.get('/',(req,res)=>servePublic(MAIN_FILE,res));
 app.get(['/index.html','/company','/company/','/company.html','/mmw-company-home-v2.html','/mmw-company-home-v2','/home-v2'],(req,res)=>res.redirect(308,'/'));

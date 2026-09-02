@@ -1,0 +1,1 @@
+(()=>{if(window.__CARPATHIA_LAUNCH)return;window.__CARPATHIA_LAUNCH=1;document.documentElement.dataset.project='CARPATHIA';document.title='CARPATHIA · MMW-COMPANY';})();

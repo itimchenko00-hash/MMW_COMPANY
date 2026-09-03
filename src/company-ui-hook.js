@@ -15,8 +15,8 @@ const PRODUCT_IDS={
 
 function addProductIds(html){
   for(const [name,id] of Object.entries(PRODUCT_IDS)){
-    const re=new RegExp('<a class="btn(?: primary)?" href="#package-request">([^<]*'+name.replace(/[+]/g,'\\+')+'[^<]*)<\\/a>','g');
-    html=html.replace(re,(m,label)=>m.replace('<a class="btn',`<a data-product-id="${id}" class="btn`));
+    const cardRe=new RegExp('(<(?:article|div)[^>]*class="[^"]*(?:product|card)[^"]*"[^>]*>[\\s\\S]*?<h3[^>]*>\\s*)'+name.replace(/[+]/g,'\\+')+'([\\s\\S]*?<a[^>]*class="btn(?: primary)?"[^>]*href="#package-request"[^>]*>)','i');
+    html=html.replace(cardRe,(m,pre,button)=>pre+name+button.replace('<a ',`<a data-product-id="${id}" `));
   }
   return html;
 }
@@ -28,7 +28,7 @@ function vacanciesSection(){
 express.response.send=function(body){
   if(typeof body==='string' && body.includes('</body>') && body.includes('MMW-COMPANY')){
     body=addProductIds(body);
-    body=body.replace(/<section id="package-request">[\\s\\S]*?<\\/section>/g,vacanciesSection());
+    body=body.replace(/<section id="package-request">[\s\S]*?<\/section>/g,vacanciesSection());
     body=body.replace(/href="#package-request">Получить расчёт/g,'href="#vacancies">Связаться с MMW-COMPANY');
   }
   return originalSend.call(this,body);

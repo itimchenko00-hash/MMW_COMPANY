@@ -1,44 +1,8 @@
 const express = require('express');
 const originalSend = express.response.send;
 
-const CART_SCRIPT = `<style id="mmw-products-cart">
-#mmwProductsCartFab{position:fixed;right:22px;bottom:22px;z-index:10000;display:none;align-items:center;gap:10px;padding:12px 16px;border:1px solid #d8b56b;background:#0d1a16;color:#f4f7f3;border-radius:999px;box-shadow:0 14px 40px #0008;cursor:pointer;font:800 11px Manrope,sans-serif;letter-spacing:.05em}
-#mmwProductsCartFab.show{display:flex}.mmw-cart-count{min-width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:#d8b56b;color:#111}
-#mmwProductsCartOverlay{position:fixed;inset:0;z-index:10001;background:#020806b8;backdrop-filter:blur(10px);display:none;padding:18px;align-items:flex-end;justify-content:center}.mmw-cart-open #mmwProductsCartOverlay{display:flex}
-#mmwProductsCart{width:min(720px,100%);max-height:min(82vh,760px);overflow:auto;background:#0d1a16;border:1px solid #294239;border-radius:18px;box-shadow:0 30px 90px #000b;color:#f4f7f3}
-.mmwc-head{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid #294239}.mmwc-head h3{margin:0;font:800 22px Manrope}.mmwc-close{background:transparent;border:1px solid #294239;color:#9eaea8;border-radius:8px;padding:7px 10px;cursor:pointer}.mmwc-body{padding:14px 20px}.mmwc-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #294239}.mmwc-row strong{font:700 15px Manrope}.mmwc-row small{display:block;color:#9eaea8;margin-top:3px}.mmwc-qty{display:flex;align-items:center;gap:5px}.mmwc-qty button{background:transparent;border:1px solid #294239;color:#f1d28f;border-radius:7px;padding:7px 10px;cursor:pointer}.mmwc-qty b{min-width:24px;text-align:center}.mmwc-remove{margin-left:4px!important}.mmwc-total{display:flex;justify-content:space-between;padding:18px 0;font:800 17px Manrope}.mmwc-total b{color:#f1d28f}.mmwc-actions{display:flex;gap:10px;flex-wrap:wrap}.mmwc-actions button{flex:1;min-width:180px;padding:12px;border-radius:8px;border:1px solid #d8b56b;background:#d8b56b;color:#111;font:800 11px Manrope;cursor:pointer}.mmwc-actions button.secondary{background:transparent;color:#f4f7f3;border-color:#294239}.mmwc-note{margin-top:12px;color:#9eaea8;font-size:11px;line-height:1.5}.mmw-product-added{border-color:#d8b56b!important;box-shadow:0 0 0 1px #d8b56b33,0 12px 30px #0004}.mmw-product-added .btn{border-color:#d8b56b!important;color:#f1d28f!important}
-@media(max-width:600px){#mmwProductsCartFab{right:12px;bottom:12px}.mmwc-body{padding:12px 14px}.mmwc-head{padding:15px}.mmwc-row{grid-template-columns:1fr}.mmwc-qty{justify-content:flex-end}.mmwc-actions{display:grid}}
-</style>
-<button id="mmwProductsCartFab" type="button" aria-label="Открыть корзину продуктов"><span>КОРЗИНА</span><span class="mmw-cart-count" id="mmwProductsCartCount">0</span></button>
-<div id="mmwProductsCartOverlay" role="dialog" aria-modal="true" aria-label="Корзина продуктов"><div id="mmwProductsCart"><div class="mmwc-head"><h3>Выбранные продукты</h3><button class="mmwc-close" type="button" data-mmwc-close>Закрыть</button></div><div class="mmwc-body"><div id="mmwProductsCartRows"></div><div class="mmwc-total"><span>Итого</span><b id="mmwProductsCartTotal">0 грн</b></div><div class="mmwc-actions"><button type="button" id="mmwProductsCartConfirm">Перейти к оформлению →</button><button type="button" class="secondary" data-mmwc-close>Продолжить выбор</button></div><div class="mmwc-note">Корзина работает по той же логике, что и MMW ORDER: одна позиция увеличивает количество на 1, − уменьшает до 1, × удаляет позицию.</div></div></div></div>
-<script id="mmw-products-cart-script">(()=>{
-const KEY='MMWCompanyProductsCart';
-const PRODUCTS=[
-{id:'business-concept',name:'BUSINESS CONCEPT',price:49000},{id:'business-project',name:'BUSINESS PROJECT',price:119000},{id:'business-system',name:'BUSINESS SYSTEM',price:249000},{id:'investment-project',name:'INVESTMENT PROJECT',price:169000},{id:'business-restart',name:'BUSINESS RESTART',price:99000},{id:'business-sale',name:'BUSINESS SALE',price:129000},{id:'business-investor',name:'BUSINESS + INVESTOR',price:229000},{id:'custom-business-project',name:'CUSTOM BUSINESS PROJECT',price:299000,from:true},{id:'large-scale',name:'LARGE SCALE',price:499000,from:true},
-{id:'starter',name:'START',price:15000},{id:'business',name:'BUSINESS',price:35000},{id:'pro',name:'PRO',price:75000},{id:'estimate',name:'Расширенная смета',price:12000},{id:'site',name:'Выезд / обследование объекта',price:8000},{id:'docs',name:'Дополнительный комплект документов',price:7500},{id:'management',name:'Проектное сопровождение',price:18000},{id:'urgent',name:'Срочное оформление заказа',price:10000}
-];
-const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(x=>x&&typeof x.id==='string'&&PRODUCTS.some(p=>p.id===x.id)&&Number.isFinite(Number(x.qty))&&Number(x.qty)>0).map(x=>({id:x.id,qty:Math.max(1,Math.floor(Number(x.qty)))})):[]}catch(e){return[]}};
-const write=cart=>{localStorage.setItem(KEY,JSON.stringify(cart));window.dispatchEvent(new CustomEvent('mmw-cart-updated'))};
-const get=id=>PRODUCTS.find(p=>p.id===id);const fmt=n=>new Intl.NumberFormat('uk-UA').format(n);const esc=s=>String(s??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;' }[m]));
-function render(){const cart=read(),rows=document.getElementById('mmwProductsCartRows'),fab=document.getElementById('mmwProductsCartFab');if(!rows||!fab)return;const count=cart.reduce((s,x)=>s+x.qty,0);document.getElementById('mmwProductsCartCount').textContent=count;fab.classList.toggle('show',count>0);if(!count)close();document.querySelectorAll('[data-product-id]').forEach(b=>{const has=cart.some(x=>x.id===b.dataset.productId);b.classList.toggle('mmw-product-added',has);b.setAttribute('aria-pressed',has?'true':'false')});document.querySelectorAll('[data-mmw-order-id]').forEach(b=>{const has=cart.some(x=>x.id===b.dataset.mmwOrderId);b.classList.toggle('added',has);b.textContent=has?'Добавлено ✓':(b.dataset.defaultLabel||'Добавить в корзину')});if(!cart.length){rows.innerHTML='<p style="color:#9eaea8">Корзина пока пуста. Выберите один или несколько продуктов.</p>';document.getElementById('mmwProductsCartTotal').textContent='0 грн';return}rows.innerHTML=cart.map(x=>{const p=get(x.id);return p?'<div class="mmwc-row"><div><strong>'+esc(p.name)+'</strong><small>'+fmt(p.price)+' грн'+(p.from?' · стартовая цена':'')+' × '+x.qty+'</small></div><div class="mmwc-qty"><button type="button" aria-label="Уменьшить" data-mmwc-minus="'+esc(x.id)+'">−</button><b>'+x.qty+'</b><button type="button" aria-label="Увеличить" data-mmwc-plus="'+esc(x.id)+'">+</button><button type="button" class="mmwc-remove" data-mmwc-remove="'+esc(x.id)+'">×</button></div></div>':''}).join('');document.getElementById('mmwProductsCartTotal').textContent=fmt(cart.reduce((s,x)=>{const p=get(x.id);return s+(p?p.price*x.qty:0)},0))+' грн'}
-function add(id){const p=get(id);if(!p)return;const cart=read(),x=cart.find(i=>i.id===id);if(x)x.qty++;else cart.push({id,qty:1});write(cart)}
-function change(id,d){const cart=read(),x=cart.find(i=>i.id===id);if(!x)return;x.qty=Math.max(1,x.qty+d);write(cart)}
-function remove(id){write(read().filter(x=>x.id!==id))}
-function open(){document.documentElement.classList.add('mmw-cart-open')}
-function close(){document.documentElement.classList.remove('mmw-cart-open')}
-function confirmGo(){const cart=read();if(!cart.length)return;const names=cart.map(x=>get(x.id)?.name+' × '+x.qty).filter(Boolean);if(!window.confirm('Вы выбрали:\n'+names.join('\n')+'\n\nПерейти к оформлению заявки в MMW ORDER?'))return;const payload=btoa(unescape(encodeURIComponent(JSON.stringify(cart))));location.href='https://mmw-order.onrender.com/?company_cart='+encodeURIComponent(payload)}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-product-id]');if(b){e.preventDefault();add(b.dataset.productId);return}const plus=e.target.closest('[data-mmwc-plus]');if(plus){e.preventDefault();change(plus.dataset.mmwcPlus,1);return}const minus=e.target.closest('[data-mmwc-minus]');if(minus){e.preventDefault();change(minus.dataset.mmwcMinus,-1);return}const r=e.target.closest('[data-mmwc-remove]');if(r){e.preventDefault();remove(r.dataset.mmwcRemove);return}if(e.target.closest('#mmwProductsCartFab')){e.preventDefault();open();return}if(e.target.closest('[data-mmwc-close]')){e.preventDefault();close();return}if(e.target.closest('#mmwProductsCartConfirm')){e.preventDefault();confirmGo()}});
-const overlay=document.getElementById('mmwProductsCartOverlay');if(overlay)overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
-window.addEventListener('mmw-cart-updated',render);window.addEventListener('storage',e=>{if(e.key===KEY)render()});
-render();
-})();</script>`;
-
-express.response.send=function(body){
-  if(typeof body==='string' && body.includes('</body>') && !body.includes('id="mmw-products-cart-script"')) {
-    const url=(this.req&&this.req.originalUrl)||'';
-    const isCompanyHome=/^\/(?:\?.*)?$/.test(url);
-    const isCompanyPage=body.includes('MMW-COMPANY')||body.includes('id="mmwOrderCatalog"')||body.includes('data-product-id');
-    if(isCompanyHome||isCompanyPage) body=body.replace('</body>',CART_SCRIPT+'</body>');
-  }
-  return originalSend.call(this,body);
+// MMW-COMPANY is informational only.
+// Orders are completed exclusively in MMW-ORDER; no cart is injected here.
+express.response.send = function(body){
+  return originalSend.call(this, body);
 };

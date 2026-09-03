@@ -6,8 +6,7 @@ on:
     branches:
       - DEV/WORKSPACE-PORTFOLIO-2026-09-03
     paths:
-      - 'WORKSPACE/*/RELEASE/**'
-      - 'WORKSPACE/*/READY/**'
+      - 'WORKSPACE/**'
       - '.github/workflows/factory-publish.yml'
 
 permissions:

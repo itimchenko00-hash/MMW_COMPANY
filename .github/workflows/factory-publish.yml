@@ -44,11 +44,15 @@ jobs:
           rm -rf _site
           mkdir -p _site
           cat > _site/index.html <<'HTML'
-          <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MMW-COMPANY FACTORY</title><style>body{font-family:system-ui;margin:40px;max-width:900px}a{display:block;padding:12px 0}</style></head><body><h1>MMW-COMPANY — FACTORY</h1><p>Published RELEASE packages only.</p>
+          <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MMW-COMPANY FACTORY</title><style>body{font-family:system-ui;margin:40px;max-width:900px}a{display:block;padding:12px 0}</style></head><body><h1>MMW-COMPANY — FACTORY</h1><p>Published project packages.</p>
           HTML
           projects=(MMW-COMPANY ALADIN NEXUS-WORK NEXUS-LOGISTICS CARPATHIA AGROHUB ENERGY-PARK)
           for project in "${projects[@]}"; do
-            src="WORKSPACE/${project}/RELEASE"
+            if [ "$project" = "ALADIN" ] && [ -f "WORKSPACE/ALADIN/DEV/MMW-STYLE-V2/index.html" ]; then
+              src="WORKSPACE/ALADIN/DEV/MMW-STYLE-V2"
+            else
+              src="WORKSPACE/${project}/RELEASE"
+            fi
             if [ -f "$src/index.html" ]; then
               mkdir -p "_site/${project}"
               cp -a "$src/." "_site/${project}/"
@@ -57,7 +61,7 @@ jobs:
           done
           printf '</body></html>\n' >> _site/index.html
           test -f _site/index.html
-          echo "Publication contains only RELEASE packages"
+          echo "Publication contains the approved ALADIN MMW-style build and RELEASE packages for other projects"
 
       - name: Upload FACTORY publication artifact
         uses: actions/upload-pages-artifact@v4
@@ -72,4 +76,3 @@ jobs:
           artifact_name: factory-pages-${{ github.run_id }}
 
       # Factory-only publication: no source branch is modified by this workflow.
-

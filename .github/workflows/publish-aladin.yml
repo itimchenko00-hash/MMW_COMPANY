@@ -28,11 +28,13 @@ jobs:
       - name: Checkout factory branch
         uses: actions/checkout@v4
 
-      - name: Setup Pages
+      - name: Setup Pages and enable it for Factory
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload ALADIN only
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./WORKSPACE/ALADIN
 

@@ -1,13 +1,17 @@
-name: Publish ALADIN Factory Copy
+name: FACTORY — Publish ALADIN
 
 on:
   workflow_dispatch:
   push:
+    branches:
+      - DEV/WORKSPACE-PORTFOLIO-2026-09-03
     paths:
       - 'WORKSPACE/ALADIN/**'
       - '.github/workflows/publish-aladin.yml'
-    branches:
-      - DEV/WORKSPACE-PORTFOLIO-2026-09-03
+
+# FACTORY ISOLATION:
+# Only the factory branch and WORKSPACE/ALADIN path can trigger this workflow.
+# No main, frozen branch, or other project is read or deployed.
 
 permissions:
   contents: read
@@ -15,7 +19,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-aladin
+  group: factory-aladin-pages
   cancel-in-progress: true
 
 jobs:
@@ -25,19 +29,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout factory branch
+      - name: Checkout FACTORY ALADIN only
         uses: actions/checkout@v4
-
-      - name: Setup Pages and enable it for Factory
-        uses: actions/configure-pages@v5
         with:
-          enablement: true
+          ref: DEV/WORKSPACE-PORTFOLIO-2026-09-03
+          sparse-checkout: |
+            WORKSPACE/ALADIN
+          sparse-checkout-cone-mode: true
 
-      - name: Upload ALADIN only
+      - name: Package ALADIN only
         uses: actions/upload-pages-artifact@v4
         with:
           path: ./WORKSPACE/ALADIN
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy ALADIN Factory Copy
         id: deployment
         uses: actions/deploy-pages@v4

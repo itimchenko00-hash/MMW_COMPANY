@@ -1,25 +1,27 @@
 const express = require('express');
 const originalSend = express.response.send;
 
-// Remove only the requested visual labels. Keep every surrounding element,
-// card, section, link and script intact.
+// Remove only the requested numeric prefixes from the four named headings.
+// Keep all surrounding structure, cards, links, scripts and other numbering intact.
 function cleanServerText(body) {
   if (typeof body !== 'string') return body;
 
-  // Exact legacy headings.
-  body = body.replace(/01\s*·\s*PACKAGES\s*\/\s*02\s*·\s*ADD-ONS/gi, '');
-  body = body.replace(/01\s*\/\s*PACKAGES/gi, '');
-  body = body.replace(/02\s*\/\s*ADD-ONS/gi, '');
+  // Exact headings requested by the user: keep the words, remove only the numbers.
+  body = body.replace(/01\s*[·•]\s*Система/gi, 'Система');
+  body = body.replace(/05\s*[·•]\s*Экономика/gi, 'Экономика');
+  body = body.replace(/04\s*[·•]\s*Портфель/gi, 'Портфель');
+  body = body.replace(/02\s*[·•]\s*Продукты/gi, 'Продукты');
 
-  // Remove standalone numeric labels when wrapped in their own element.
-  body = body.replace(/(<(?:b|span|div|small|em|strong)[^>]*>)\s*(?:05|04|01|0|02)\s*(<\/(?:b|span|div|small|em|strong)>)/gi, '$1$2');
-
-  // Also remove exact numeric text nodes on the client side. This catches
-  // labels created dynamically after the initial HTML response.
+  // Catch dynamically generated versions on the client side.
   if (!body.includes('</body>')) return body;
   const cleanupScript = `<script id="mmw-labels-cleanup">(()=>{
-const exact=new Set(['05','04','01','0','02','01 · PACKAGES / 02 · ADD-ONS','01 / PACKAGES','02 / ADD-ONS']);
-const clean=()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())nodes.push(w.currentNode);for(const n of nodes){const v=n.nodeValue.trim();if(exact.has(v))n.nodeValue='';}};
+const rules=[
+  [/^01\\s*[·•]\\s*Система$/i,'Система'],
+  [/^05\\s*[·•]\\s*Экономика$/i,'Экономика'],
+  [/^04\\s*[·•]\\s*Портфель$/i,'Портфель'],
+  [/^02\\s*[·•]\\s*Продукты$/i,'Продукты']
+];
+const clean=()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())nodes.push(w.currentNode);for(const n of nodes){let v=n.nodeValue.trim();for(const [re,repl] of rules){if(re.test(v)){n.nodeValue=n.nodeValue.replace(re,repl);break;}}}};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',clean,{once:true});else clean();
 new MutationObserver(clean).observe(document.body,{childList:true,subtree:true});
 })();</script>`;

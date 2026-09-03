@@ -1,1 +1,0 @@
-ALADIN publication test from FACTORY.

@@ -1,0 +1,9 @@
+ALADIN WORKING COPY SOURCE
+
+Exact last edited ALADIN version:
+itimchenko00-hash/mmw-company
+branch: DEV/MMW-COMPANY-PAGES-2026-09-03
+commit: 577738993873f367fc2e2209ee3b3fbaeba00820
+file: index.html
+
+The source/original is not moved or modified. This workspace folder is isolated for subsequent ALADIN work.

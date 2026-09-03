@@ -12,6 +12,11 @@ function cleanServerText(body) {
   body = body.replace(/04\s*[·•]\s*Портфель/gi, 'Портфель');
   body = body.replace(/02\s*[·•]\s*Продукты/gi, 'Продукты');
 
+  // Keep every product CTA visually identical to the other product buttons.
+  // Neutralize an accidental primary/yellow state only inside the products block.
+  const productButtonFix = '<style id="mmw-products-button-fix">.products .btn{background:transparent;color:inherit;border-color:var(--l)}.products .btn.primary{background:transparent;color:inherit;border-color:var(--l)}</style>';
+  if (body.includes('</head>')) body = body.replace('</head>', productButtonFix+'</head>');
+
   // Catch dynamically generated versions on the client side.
   if (!body.includes('</body>')) return body;
   const cleanupScript = `<script id="mmw-labels-cleanup">(()=>{

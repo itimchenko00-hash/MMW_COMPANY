@@ -1,0 +1,41 @@
+name: Publish ALADIN Factory Copy
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'WORKSPACE/ALADIN/**'
+      - '.github/workflows/publish-aladin.yml'
+    branches:
+      - DEV/WORKSPACE-PORTFOLIO-2026-09-03
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-aladin
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout factory branch
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload ALADIN only
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./WORKSPACE/ALADIN
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

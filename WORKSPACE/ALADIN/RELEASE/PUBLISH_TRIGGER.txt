@@ -1,1 +1,5 @@
-ALADIN Factory publication trigger — 2026-09-03 BUYER GALLERY BLOCKS 02-05 FINAL
+ALADIN Factory publication trigger — 2026-09-03 DIGITAL ENGINE FINAL
+
+Publication source: WORKSPACE/ALADIN/RELEASE
+Factory branch: DEV/WORKSPACE-PORTFOLIO-2026-09-03
+Originals and frozen branches remain untouched.

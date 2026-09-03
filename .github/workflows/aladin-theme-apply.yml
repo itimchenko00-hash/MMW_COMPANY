@@ -1,0 +1,54 @@
+name: ALADIN — apply standalone brand identity
+
+on:
+  push:
+    branches: [DEV/WORKSPACE-PORTFOLIO-2026-09-03]
+    paths:
+      - '.github/workflows/aladin-theme-apply.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: DEV/WORKSPACE-PORTFOLIO-2026-09-03
+          fetch-depth: 0
+      - name: Apply ALADIN standalone palette
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('WORKSPACE/ALADIN/RELEASE/index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* ALADIN STANDALONE IDENTITY v1 */'
+          if marker in s:
+              print('Theme already applied')
+              raise SystemExit(0)
+          css = '''<style>/* ALADIN STANDALONE IDENTITY v1 */
+          :root{--bg:#081412;--p:#10201c;--l:#30463e;--g:#b77a49;--t:#f0eadf;--m:#a9b5ad;--a:#88a893}
+          body{background:radial-gradient(circle at 82% 0,#234438,#081412 48%)!important;color:var(--t)!important}
+          .top{border-color:var(--l)!important}.brand{color:var(--g)!important}.brand span{color:var(--t)!important}.badge{color:var(--m)!important;border-color:#466156!important}
+          .hero h1{color:#f4eee4}.hero p{color:#c9d2cc!important}.k{color:var(--g)!important}.photo{box-shadow:0 24px 60px rgba(0,0,0,.34);border:1px solid #3e5a4e}
+          .title{color:#eee7dc}.muted{color:var(--m)!important}.roles{gap:14px}.role{background:linear-gradient(145deg,#13261f,#0b1714)!important;border-color:#30463e!important;transition:transform .25s,border-color .25s,box-shadow .25s}.role:hover{transform:translateY(-5px);border-color:#648173!important;box-shadow:0 18px 45px rgba(0,0,0,.3)}.role.active{border-color:var(--g)!important;box-shadow:0 0 0 1px rgba(183,122,73,.2) inset,0 18px 45px rgba(0,0,0,.3)}
+          .panel{background:linear-gradient(145deg,#142820,#0b1714)!important;border-color:var(--g)!important;box-shadow:0 22px 65px rgba(0,0,0,.34)}.head{background:linear-gradient(90deg,rgba(183,122,73,.08),transparent);border-color:var(--l)!important}.nav{background:#0b1714!important;border-color:var(--l)!important}.nav button{background:#10201c!important;border-color:#385047!important;color:#aab8b0!important}.nav button.active{background:rgba(183,122,73,.1)!important;border-color:var(--g)!important;color:#d09a68!important}
+          .screen{background:radial-gradient(circle at 100% 0,rgba(61,99,79,.2),transparent 42%)!important}.screen h3{color:#f1ebe1}.lead{color:#ccd5cf!important}.point{background:linear-gradient(145deg,#11221d,#0b1714)!important;border-color:#2c423a!important;transition:.2s}.point:hover{transform:translateY(-2px);border-color:#648173!important}.point b{color:var(--g)!important}.visual{border-color:#3e5a4e!important;box-shadow:0 22px 65px rgba(0,0,0,.34)!important}.visual:after{content:'ALADIN · A MMW-COMPANY PROJECT';position:absolute;left:14px;bottom:12px;padding:6px 9px;border:1px solid rgba(183,122,73,.48);border-radius:999px;background:rgba(8,20,18,.82);font-size:9px;letter-spacing:.12em;color:#d09a68}
+          .controls{background:#0b1714!important;border-color:var(--l)!important}.btn{transition:transform .2s,box-shadow .2s!important}.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.3)}
+          .calculator{background:linear-gradient(145deg,#142820,#0b1714)!important;border-color:#486556!important;box-shadow:0 22px 65px rgba(0,0,0,.34)!important}.calculator:before{content:'ALADIN';position:absolute;right:16px;top:-8px;font:900 96px/1 Georgia,serif;color:rgba(183,122,73,.035);letter-spacing:.04em;pointer-events:none}.field{background:#10201c!important;border-color:var(--l)!important}.field:hover{border-color:#587367!important}.field:focus-within{border-color:var(--g)!important;box-shadow:0 0 0 1px rgba(183,122,73,.15) inset!important}.field label{color:#c4cec8!important}.field input,.field select{border-color:#385047!important}.field input:focus,.field select:focus{border-color:var(--g)!important;box-shadow:0 0 0 2px rgba(183,122,73,.09)!important}.calcRow{border-color:#294038!important}.calcRow:hover{background:rgba(183,122,73,.045)!important}.calcRow b{color:var(--g)!important}.calcFoot #fxStatus{color:var(--a)!important}.kpis>div{border-color:#30463e!important;background:#10201c!important}.kpis b{color:var(--g)!important}.form input,.form select,.form textarea{border-color:var(--l)!important;background:#0f1b18!important}.form input:focus,.form select:focus,.form textarea:focus{border-color:var(--g)!important;box-shadow:0 0 0 2px rgba(183,122,73,.09)!important}.card{background:linear-gradient(145deg,#11221d,#0b1714)!important;border-color:#30463e!important}
+          @media(max-width:480px){.calculator:before{font-size:68px}}
+          </style>'''
+          p.write_text(s.replace('</head>', css+'</head>', 1), encoding='utf-8')
+          PY
+      - name: Commit ALADIN identity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add WORKSPACE/ALADIN/RELEASE/index.html
+          if git diff --cached --quiet; then
+            echo 'No changes to commit'
+          else
+            git commit -m 'ALADIN: establish standalone brand identity'
+            git push origin HEAD:DEV/WORKSPACE-PORTFOLIO-2026-09-03
+          fi

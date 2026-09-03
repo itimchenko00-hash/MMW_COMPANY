@@ -9,9 +9,11 @@ on:
       - 'WORKSPACE/ALADIN/**'
       - '.github/workflows/publish-aladin.yml'
 
-# FACTORY ISOLATION:
-# Only the factory branch and WORKSPACE/ALADIN path can trigger this workflow.
-# No main, frozen branch, or other project is read or deployed.
+# FACTORY ISOLATION CONTRACT:
+# - Source is ONLY the FACTORY branch below.
+# - Published files are ONLY WORKSPACE/ALADIN.
+# - main, frozen branches, reserves and other projects are never deployed by this workflow.
+# - Each project will have its own workflow and concurrency group.
 
 permissions:
   contents: read
@@ -30,12 +32,24 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout FACTORY ALADIN only
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: DEV/WORKSPACE-PORTFOLIO-2026-09-03
           sparse-checkout: |
             WORKSPACE/ALADIN
           sparse-checkout-cone-mode: true
+          fetch-depth: 1
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Verify ALADIN publication boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f WORKSPACE/ALADIN/index.html
+          test -d WORKSPACE/ALADIN
+          echo "FACTORY source verified: WORKSPACE/ALADIN"
 
       - name: Package ALADIN only
         uses: actions/upload-pages-artifact@v4

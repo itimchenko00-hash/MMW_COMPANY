@@ -71,3 +71,5 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: factory-pages-${{ github.run_id }}
+
+      # Factory-only publication: no source branch is modified by this workflow.

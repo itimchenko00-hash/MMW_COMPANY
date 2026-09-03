@@ -1,0 +1,6 @@
+ALADIN DEV rebuild verified locally before Factory TEST.
+
+The new self-contained index.html is stored in the Factory DEV working tree.
+No external aladin.js dependency is required by the rebuilt page.
+
+Validation: HTML parser OK; JavaScript syntax check (Node.js) OK; required element IDs unique and present.

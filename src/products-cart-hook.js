@@ -34,6 +34,11 @@ render();
 })();</script>`;
 
 express.response.send=function(body){
-  if(typeof body==='string'&&body.includes('MMW-COMPANY')&&body.includes('</body>')&&!body.includes('id="mmw-products-cart-script"')) body=body.replace('</body>',CART_SCRIPT+'</body>');
+  if(typeof body==='string' && body.includes('</body>') && !body.includes('id="mmw-products-cart-script"')) {
+    const url=(this.req&&this.req.originalUrl)||'';
+    const isCompanyHome=/^\/(?:\?.*)?$/.test(url);
+    const isCompanyPage=body.includes('MMW-COMPANY')||body.includes('id="mmwOrderCatalog"')||body.includes('data-product-id');
+    if(isCompanyHome||isCompanyPage) body=body.replace('</body>',CART_SCRIPT+'</body>');
+  }
   return originalSend.call(this,body);
 };

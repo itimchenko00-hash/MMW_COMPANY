@@ -1,3 +1,0 @@
-MMW-COMPANY deployment trigger.
-Build: 2026-09-03-labels-cleanup-v1
-Purpose: force a fresh Render deployment from main after requested visual-label cleanup.

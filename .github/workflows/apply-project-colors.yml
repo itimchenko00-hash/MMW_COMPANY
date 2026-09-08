@@ -1,0 +1,28 @@
+name: ETALON-03 project colors
+on:
+  push:
+    branches:
+      - 'ЭТАЛОН-03/MMW-COMPANY-WORK'
+permissions:
+  contents: write
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Apply project color system
+        run: node scripts/apply-project-color-system.js
+      - name: Commit themed project pages
+        run: |
+          git config user.name 'MMW-COMPANY Factory'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add projects/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'ETALON-03: apply PROJECT COLOR SYSTEM 01 to six projects'
+          git push origin HEAD:'${{ github.ref_name }}'

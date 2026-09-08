@@ -2,32 +2,54 @@ const fs=require('fs');
 const path=require('path');
 const TARGET=path.normalize(path.join(__dirname,'../company/website/mmw-company-interactive-v11.html'));
 const original=fs.readFileSync.bind(fs);
-const svg={
- market:'<svg viewBox="0 0 80 44"><path d="M7 34L20 25L33 27L48 15L72 7"/><path d="M64 7h8v8"/><text x="7" y="42">MARKET</text></svg>',
- model:'<svg viewBox="0 0 80 44"><circle cx="12" cy="22" r="7"/><circle cx="40" cy="11" r="7"/><circle cx="68" cy="25" r="7"/><path d="M19 19L33 14M47 14L61 22"/><text x="6" y="42">MODEL</text></svg>',
- economics:'<svg viewBox="0 0 80 44"><path d="M7 34H73"/><rect x="12" y="25" width="9" height="9"/><rect x="28" y="19" width="9" height="15"/><rect x="44" y="12" width="9" height="22"/><rect x="60" y="5" width="9" height="29"/><text x="7" y="42">ECONOMICS</text></svg>',
- operations:'<svg viewBox="0 0 80 44"><rect x="31" y="4" width="18" height="9" rx="2"/><rect x="7" y="28" width="20" height="9" rx="2"/><rect x="53" y="28" width="20" height="9" rx="2"/><path d="M40 13v8M40 21L17 28M40 21L63 28"/><text x="7" y="42">OPERATIONS</text></svg>',
- capital:'<svg viewBox="0 0 80 44"><circle cx="40" cy="21" r="11"/><path d="M40 10V4M40 32v7M29 21H7M51 21h22"/><text x="7" y="42">CAPITAL</text></svg>',
- sales:'<svg viewBox="0 0 80 44"><path d="M7 34L22 27L35 28L49 17L72 7"/><path d="M64 7h8v8"/><text x="7" y="42">SALES</text></svg>'
+
+const icons={
+ market:'<svg viewBox="0 0 120 56" aria-hidden="true"><path d="M8 45V12M8 45h104M18 38l18-11 16 5 19-18 31-7"/><path d="M94 7h18v18"/><circle cx="52" cy="32" r="3"/><text x="9" y="54">DEMAND / SEGMENTS</text></svg>',
+ model:'<svg viewBox="0 0 120 56" aria-hidden="true"><circle cx="18" cy="29" r="10"/><circle cx="60" cy="12" r="10"/><circle cx="102" cy="31" r="10"/><path d="M27 25l24-10M69 16l24 10"/><path d="M45 45h30"/><text x="9" y="54">VALUE / REVENUE</text></svg>',
+ economics:'<svg viewBox="0 0 120 56" aria-hidden="true"><path d="M8 45h104"/><rect x="16" y="32" width="12" height="13"/><rect x="38" y="25" width="12" height="20"/><rect x="60" y="17" width="12" height="28"/><rect x="82" y="8" width="12" height="37"/><path d="M12 15h80"/><text x="9" y="54">ASSUMPTIONS / KPI</text></svg>',
+ operations:'<svg viewBox="0 0 120 56" aria-hidden="true"><rect x="48" y="5" width="24" height="13" rx="2"/><rect x="9" y="36" width="29" height="13" rx="2"/><rect x="82" y="36" width="29" height="13" rx="2"/><path d="M60 18v9M60 27L24 36M60 27l36 9"/><text x="9" y="54">PEOPLE / PROCESS</text></svg>',
+ capital:'<svg viewBox="0 0 120 56" aria-hidden="true"><circle cx="60" cy="28" r="15"/><path d="M60 13V4M60 43v9M45 28H9M75 28h36"/><circle cx="16" cy="28" r="3"/><circle cx="104" cy="28" r="3"/><text x="9" y="54">DEAL / CAPITAL</text></svg>',
+ sales:'<svg viewBox="0 0 120 56" aria-hidden="true"><path d="M8 45l20-11 17 5 20-17 28 7 19-22"/><path d="M99 7h13v13"/><circle cx="93" cy="29" r="3"/><text x="9" y="54">PACKAGE / CONVERSION</text></svg>'
 };
-const arch=[['01','MARKET','спрос и сегменты','market'],['02','MODEL','ценность и доход','model'],['03','ECONOMICS','допущения и KPI','economics'],['04','OPERATIONS','процессы и ресурсы','operations'],['05','CAPITAL','форматы сделки','capital'],['06','SALES','коммерческий пакет','sales']];
+
+const arch=[['01','MARKET','спрос и сегменты','market'],['02','MODEL','ценность и доход','model'],['03','ECONOMICS','допущения и KPI','economics'],['04','OPERATIONS','процессы и ресурсы','operations'],['05','INVESTMENT','форматы сделки','capital'],['06','SALES','коммерческий пакет','sales']];
 const chain=[['01','IDEA','исходная задача'],['02','MARKET','спрос и сегменты'],['03','BUSINESS MODEL','ценность и доход'],['04','ECONOMICS','модель и KPI'],['05','OPERATIONS','процессы и ресурсы'],['06','TECHNICAL','техническая система'],['07','LEGAL','правовой контур'],['08','INVESTMENT','финансирование'],['09','SALES','коммерциализация'],['10','IMPLEMENTATION','переход к реализации']];
-const portfolio={ALADIN:'photo-1500534314209-a25ddb2bd429', 'NEXUS WORK':'photo-1497366811353-6870744d04b2','NEXUS LOGISTICS':'photo-1504307651254-35680f356dfd',CARPATHIA:'photo-1500534314209-a25ddb2bd429',AGROHUB:'photo-1509440159596-0249088772ff','ENERGY PARK':'photo-1551836022-d5d88e9218df'};
-function infographicCard(a){return `<div class="card factoryInfo"><div class="factoryViz">${svg[a[3]]}</div><div class="factoryInfoBody"><b>${a[0]}</b><strong>${a[1]}</strong><span>${a[2]}</span></div></div>`}
-function chainCard(a){return `<div class="phase factoryChain"><b>${a[0]}</b><strong>${a[1]}</strong><span>${a[2]}</span></div>`}
+
+function infographicCard(a){return `<div class="card factoryInfo"><div class="factoryViz">${icons[a[3]]}</div><div class="factoryInfoBody"><b>${a[0]}</b><strong>${a[1]}</strong><span>${a[2]}</span></div></div>`}
+function chainCard(a,i){return `<div class="phase factoryChain"><b>${a[0]}</b><strong>${a[1]}</strong><span>${a[2]}</span>${i<9?'<i aria-hidden="true">→</i>':''}</div>`}
+
 function transform(html){
- if(!html.includes('id="mmw-factory-infographics"')) html=html.replace('</style>','<style id="mmw-factory-infographics">.factoryInfo{min-height:168px;position:relative}.factoryViz{height:78px;padding:12px;background:linear-gradient(145deg,#10241d,#08120f);border-bottom:1px solid var(--l);display:flex;align-items:center}.factoryViz svg{width:100%;height:100%;fill:none;stroke:var(--g2);stroke-width:1.5}.factoryViz text{fill:var(--g2);stroke:none;font:700 7px "DM Sans";letter-spacing:.06em}.factoryInfoBody{padding:12px 14px}.factoryInfoBody>b{color:var(--g);font:800 10px Manrope}.factoryInfoBody strong{display:block;font:700 15px Manrope;margin:3px 0}.factoryInfoBody span{color:var(--m);font-size:11px}.factoryChain{position:relative}.factoryChain:after{content:"→";position:absolute;right:-8px;top:43%;color:var(--g);font-size:16px}.factoryChain:last-child:after{display:none}.portfolioVisual{height:110px;border-bottom:1px solid var(--l);background:center/cover;position:relative}.portfolioVisual:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#07100e22,#07100ed9)}.readySell{margin-top:18px;padding:24px;border:1px solid var(--l);border-radius:15px;background:linear-gradient(145deg,var(--p2),var(--p))}.readySellGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.readySellItem{padding:14px;background:#08120f;border:1px solid var(--l);border-radius:9px}.readySellItem b{color:var(--g);font:800 11px Manrope}.readySellItem strong{display:block;margin-top:5px;font:700 14px Manrope}@media(max-width:950px){.factoryChain:after{display:none}.readySellGrid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.readySellGrid{grid-template-columns:1fr}}</style>');
- html=html.replace(/<div class="architecture">[\s\S]*?<\/div><\/div><\/section>/,`<div class="architecture">${arch.map(infographicCard).join('')}</div></div></section>`);
+ if(html.includes('id="mmw-factory-infographics"')) return html;
+ const css=`<style id="mmw-factory-infographics">
+.factoryInfo{min-height:174px;position:relative;background:linear-gradient(145deg,var(--p2),var(--p));}
+.factoryViz{height:84px;padding:11px 13px;background:#08120f;border-bottom:1px solid var(--l);display:flex;align-items:center;position:relative;overflow:hidden}
+.factoryViz:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49%,#29423933 50%,transparent 51%),linear-gradient(0deg,transparent 49%,#29423933 50%,transparent 51%);background-size:22px 22px;opacity:.55}
+.factoryViz svg{position:relative;z-index:1;width:100%;height:100%;fill:none;stroke:var(--g2);stroke-width:1.35}
+.factoryViz text{fill:var(--g2);stroke:none;font:700 7px "DM Sans";letter-spacing:.055em}
+.factoryInfoBody{padding:12px 14px}.factoryInfoBody>b{color:var(--g);font:800 10px Manrope}.factoryInfoBody strong{display:block;font:700 15px Manrope;margin:3px 0}.factoryInfoBody span{color:var(--m);font-size:11px}
+.factoryChain{position:relative;min-height:118px;display:flex;flex-direction:column;justify-content:center}.factoryChain i{position:absolute;right:-10px;top:44%;font-style:normal;color:var(--g);font-size:17px;z-index:3}.factoryChain b{color:var(--g);font:800 10px Manrope}.factoryChain strong{display:block;font:700 13px Manrope;margin:6px 0 2px}.factoryChain span{font-size:10px;color:var(--m)}
+.readySell{margin-top:18px;padding:24px;border:1px solid var(--l);border-radius:15px;background:linear-gradient(145deg,var(--p2),var(--p));position:relative;overflow:hidden}.readySell:after{content:"100%";position:absolute;right:22px;top:12px;font:800 44px Manrope;color:#d8b56b18;letter-spacing:-.06em}.readySellGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.readySellItem{padding:14px;background:#08120f;border:1px solid var(--l);border-radius:9px;position:relative}.readySellItem:before{content:"✓";position:absolute;right:10px;top:8px;color:var(--g);font-weight:800}.readySellItem b{color:var(--g);font:800 11px Manrope}.readySellItem strong{display:block;margin-top:5px;font:700 14px Manrope}
+.factoryGate{margin-top:18px;padding:16px;border:1px solid var(--l);border-radius:12px;background:#08120f}.factoryGateRow{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;align-items:center}.factoryGateStep{padding:10px 7px;text-align:center;border:1px solid var(--l);border-radius:7px;font:800 9px Manrope;color:var(--m);letter-spacing:.04em}.factoryGateStep.active{border-color:#d8b56b88;color:var(--g2);background:#12231d}.factoryGateArrow{text-align:center;color:var(--g);font-size:13px}
+@media(max-width:950px){.factoryChain i{display:none}.readySellGrid{grid-template-columns:1fr 1fr}.factoryGateRow{grid-template-columns:1fr 1fr 1fr 1fr 1fr}}
+@media(max-width:600px){.readySellGrid{grid-template-columns:1fr}.factoryGateRow{grid-template-columns:1fr}.factoryGateArrow{transform:rotate(90deg)}}
+</style>`;
+ html=html.replace('</style>',css+'</style>');
+
+ // Replace the existing six architecture cards with one semantic Factory architecture layer.
+ html=html.replace(/<div class="architecture">[\s\S]*?<\/div><\/div><\/section>/,`<div class="architecture">${arch.map(infographicCard).join('')}</div><div class="factoryGate"><div class="eyebrow">CONTROL GATE</div><div class="factoryGateRow"><div class="factoryGateStep active">FACTORY</div><div class="factoryGateArrow">→</div><div class="factoryGateStep">TEST</div><div class="factoryGateArrow">→</div><div class="factoryGateStep active">VERIFIED</div></div></div></div></section>`);
+
+ // Replace the existing roadmap visuals with the ten-step development chain, without adding a second roadmap block.
  html=html.replace(/<div class="roadmap">[\s\S]*?<\/div><\/div><\/section>/,`<div class="roadmap">${chain.map(chainCard).join('')}</div></div></section>`);
+
  html=html.replace(/<div class="eyebrow">01 · Система<\/div><h2>Одна задача\. <em>Полная архитектура\.<\/em><\/h2>/,'<div class="eyebrow">03 · METHODOLOGY</div><h2>PROJECT <em>ARCHITECTURE.</em></h2>');
  html=html.replace(/<div class="eyebrow">06 · Процесс<\/div><h2>От задачи <em>до запуска\.<\/em><\/h2>/,'<div class="eyebrow">01 · DEVELOPMENT CHAIN</div><h2>От задачи <em>до реализации.</em></h2>');
+
+ // Add READY-TO-SELL 100 once, immediately before the request block.
  if(!html.includes('id="ready-to-sell"')){
   const ready=`<section id="ready-to-sell"><div class="wrap"><div class="head"><div><div class="eyebrow">05 / STANDARD</div><h2>READY-TO-SELL <em>100.</em></h2></div><p>Полнота разработанного и упакованного бизнес-проекта — без гарантии его реализации или прибыльности.</p></div><div class="readySell"><div class="eyebrow">MMW / PROJECT STANDARD</div><h3>READY-TO-SELL 100</h3><p class="notice">Готовность означает полноту разработанного и упакованного бизнес-проекта, а не гарантию его реализации или прибыльности.</p><div class="readySellGrid"><div class="readySellItem"><b>01</b><strong>структура проекта</strong></div><div class="readySellItem"><b>02</b><strong>экономическая модель</strong></div><div class="readySellItem"><b>03</b><strong>управление и процессы</strong></div><div class="readySellItem"><b>04</b><strong>коммерческая упаковка</strong></div></div><div class="actions"><a class="btn primary" href="/ready-to-sell">VIEW READY-TO-SELL</a></div></div></div></section>`;
   html=html.replace('<section id="package-request">',ready+'<section id="package-request">');
  }
- html=html.replace(/(<div class="card portfolioItem">)(<div class="portfolioBody">)/g,(m,a,b)=>m+b); // no-op: preserve existing cards
- const items=[...html.matchAll(/<div class="card portfolioItem">[\s\S]*?<h3>([^<]+)<\/h3>/g)];
- for(let i=items.length-1;i>=0;i--){const name=items[i][1].trim();const img=portfolio[name];if(!img)continue;const start=items[i].index+items[i][0].indexOf('<div class="portfolioBody">');html=html.slice(0,start)+`<div class="portfolioVisual" style="background-image:url('https://images.unsplash.com/${img}?auto=format&fit=crop&w=900&q=82')"></div>`+html.slice(start);}
  return html;
 }
+
 fs.readFileSync=function(file,opts){const out=original(file,opts);if(path.normalize(file)===TARGET&&typeof out==='string')return transform(out);return out};
